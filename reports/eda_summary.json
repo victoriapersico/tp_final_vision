@@ -1,0 +1,298 @@
+{
+  "fabrid_v3": {
+    "original_inventory": {
+      "images": 2407,
+      "formats": {
+        "JPEG": 2407
+      },
+      "modes": {
+        "RGB": 2407
+      },
+      "resolutions": {
+        "2340x4160": 383,
+        "4160x2340": 269,
+        "512x512": 372,
+        "3120x4160": 507,
+        "4160x3120": 870,
+        "1984x2200": 1,
+        "1768x1952": 1,
+        "2344x2248": 1,
+        "1752x2096": 1,
+        "2336x2644": 1,
+        "2784x2328": 1
+      },
+      "unreadable": []
+    },
+    "annotation_export_inventory": {
+      "images": 2407,
+      "formats": {
+        "JPEG": 2407
+      },
+      "modes": {
+        "RGB": 2407
+      },
+      "resolutions": {
+        "640x613": 1,
+        "640x360": 269,
+        "360x640": 379,
+        "640x480": 737,
+        "480x640": 433,
+        "640x640": 583,
+        "577x640": 1,
+        "579x640": 1,
+        "565x640": 1,
+        "534x640": 1,
+        "640x535": 1
+      },
+      "unreadable": []
+    },
+    "annotations": {
+      "classes": [
+        "Needle Mark Defect",
+        "hole Defect",
+        "missing yarn Defect",
+        "stain Defect"
+      ],
+      "splits": {
+        "train": {
+          "images": 1685,
+          "labels": 1685,
+          "empty_labels": 431,
+          "instances": 1714,
+          "malformed_rows": 0
+        },
+        "valid": {
+          "images": 364,
+          "labels": 364,
+          "empty_labels": 94,
+          "instances": 395,
+          "malformed_rows": 0
+        },
+        "test": {
+          "images": 358,
+          "labels": 358,
+          "empty_labels": 88,
+          "instances": 393,
+          "malformed_rows": 0
+        }
+      },
+      "instances": {
+        "stain Defect": 718,
+        "Needle Mark Defect": 636,
+        "missing yarn Defect": 580,
+        "hole Defect": 568
+      },
+      "area_fraction": {
+        "count": 2502,
+        "median": 0.009045883670282705,
+        "p10": 0.0009479522705078125,
+        "p90": 0.04766770422419463,
+        "under_1pct": 1331
+      },
+      "possible_source_leakage": {
+        "IMG_20260714_202412_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_202435_jpg": [
+          "train",
+          "valid"
+        ],
+        "IMG_20260714_202503_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_202734_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_202805_jpg": [
+          "train",
+          "valid"
+        ],
+        "IMG_20260714_202904_jpg": [
+          "train",
+          "valid"
+        ],
+        "IMG_20260714_202949_jpg": [
+          "train",
+          "valid"
+        ],
+        "IMG_20260714_203145_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_203320_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_203535_jpg": [
+          "train",
+          "valid"
+        ],
+        "IMG_20260714_203625_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_203755_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_204532_jpg": [
+          "test",
+          "train"
+        ],
+        "IMG_20260714_204610_jpg": [
+          "train",
+          "valid"
+        ]
+      }
+    }
+  },
+  "raw_fabrid": {
+    "high_res_inventory": {
+      "images": 709,
+      "formats": {
+        "PNG": 709
+      },
+      "modes": {
+        "RGB": 709
+      },
+      "resolutions": {
+        "1792x1024": 709
+      },
+      "unreadable": []
+    },
+    "mask_inventory": {
+      "images": 204,
+      "formats": {
+        "PNG": 204
+      },
+      "modes": {
+        "L": 204
+      },
+      "resolutions": {
+        "1792x1024": 204
+      },
+      "unreadable": []
+    },
+    "analysis": {
+      "high_res": {
+        "images": 709,
+        "defective": 202,
+        "good": 507,
+        "rolls": {
+          "Rollo1A": 87,
+          "Rollo2A": 82,
+          "Rollo3A": 20,
+          "Rollo4A": 170,
+          "Rollo5A": 33,
+          "Rollo6A": 124,
+          "Rollo7A": 193
+        }
+      },
+      "annotations": {
+        "instances": 361,
+        "with_bbox": 361,
+        "with_polygon": 361,
+        "median_area_fraction": 0.0006934574672154018,
+        "under_1pct": 327
+      },
+      "patches": {
+        "counts": {
+          "test_good": 4969,
+          "test_defect": 687,
+          "train_good": 14196
+        },
+        "unique_parents": {
+          "test_good": 202,
+          "test_defect": 202,
+          "train_good": 507
+        },
+        "parent_overlap_between_splits": {
+          "test_defect__test_good": 202
+        }
+      }
+    }
+  },
+  "fabric_spot_defect": {
+    "original_inventory": {
+      "images": 1014,
+      "formats": {
+        "JPEG": 1014
+      },
+      "modes": {
+        "RGB": 1014
+      },
+      "resolutions": {
+        "4032x3024": 370,
+        "901x1600": 224,
+        "1600x901": 201,
+        "1500x1500": 2,
+        "3000x3000": 3,
+        "1600x770": 1,
+        "1600x1524": 1,
+        "720x1600": 43,
+        "1600x720": 65,
+        "1600x1600": 1,
+        "1600x1364": 1,
+        "4032x1816": 13,
+        "4032x2268": 1,
+        "2701x3728": 1,
+        "2686x4032": 1,
+        "1816x3086": 1,
+        "3083x2548": 1,
+        "3024x3271": 1,
+        "2857x2993": 1,
+        "2664x2861": 1,
+        "3024x3843": 1,
+        "2812x2846": 1,
+        "2627x3127": 1,
+        "3024x3276": 1,
+        "3013x3584": 1,
+        "946x1600": 1,
+        "900x1600": 10,
+        "1600x1444": 1,
+        "1600x630": 1,
+        "876x1600": 1,
+        "1156x651": 23,
+        "651x1156": 20,
+        "1924x1737": 1,
+        "3063x1613": 1,
+        "1816x2744": 1,
+        "2604x4624": 1,
+        "2139x843": 1,
+        "741x1600": 1,
+        "1183x720": 1,
+        "1600x900": 12
+      },
+      "unreadable": []
+    },
+    "augmented_inventory": {
+      "images": 4600,
+      "formats": {
+        "JPEG": 4600
+      },
+      "modes": {
+        "RGB": 4600
+      },
+      "resolutions": {
+        "416x416": 4600
+      },
+      "unreadable": []
+    }
+  },
+  "rise_samples": {
+    "images": 3,
+    "formats": {
+      "JPEG": 3
+    },
+    "modes": {
+      "RGB": 3
+    },
+    "resolutions": {
+      "1080x1920": 3
+    },
+    "unreadable": []
+  }
+}

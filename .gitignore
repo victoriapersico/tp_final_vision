@@ -1,0 +1,52 @@
+# Datos locales y descargas grandes
+data/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# Pesos y resultados pesados de modelos
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+
+# Python y notebooks
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Credenciales y configuración privada
+*.pem
+*.key
+credentials.json
+secrets.*
+.aws/
+.huggingface/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.tmp
+*.log
+
+# Resultados futuros (conservar la carpeta)
+results/*
+!results/.gitkeep
