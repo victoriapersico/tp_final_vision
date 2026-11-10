@@ -1,0 +1,7 @@
+dataset,entrada_al_modelo,error_px_en_la_entrada,recall,recall < 8 px,recall 8–16 px,recall 16–32 px,recall 32–64 px,recall ≥ 64 px
+Holes,resolución nativa,1,0.978,0.75,0.995,1.0,1.0,1.0
+Holes,lado mayor 1024,1,0.578,0.0,0.0,0.6,1.0,1.0
+Holes,lado mayor 640,1,0.39,0.0,0.0,0.005,0.874,1.0
+Spots,resolución nativa,1,0.876,0.434,0.998,1.0,1.0,1.0
+Spots,lado mayor 1024,1,0.447,0.0,0.002,0.541,0.987,1.0
+Spots,lado mayor 640,1,0.303,0.0,0.002,0.002,0.808,0.996

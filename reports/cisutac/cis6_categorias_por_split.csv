@@ -1,0 +1,7 @@
+dataset,split,instancias,small_lado_menor_32,medium_32_a_96,large_96_o_mas,diminutos_lado_menor_16
+Holes,train,589,348,176,65,191
+Holes,valid,71,35,28,8,19
+Holes,test,125,74,43,8,37
+Spots,train,1903,1262,426,215,854
+Spots,valid,284,199,60,25,138
+Spots,test,311,207,66,38,140

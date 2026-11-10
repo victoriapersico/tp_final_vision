@@ -1,0 +1,13 @@
+dataset,tile_px,solapamiento,tiles_por_imagen_mediana,pixeles_procesados_sobre_imagen,costo_relativo_a_una_pasada_640,pct_defectos_enteros_en_algun_tile
+Holes,512,0.0,40.0,1.26,25.6,86.2
+Holes,512,0.2,60.0,1.9,38.4,96.2
+Holes,640,0.0,24.0,1.19,24.0,85.1
+Holes,640,0.2,32.0,1.58,32.0,97.1
+Holes,1024,0.0,12.0,1.52,30.7,93.8
+Holes,1024,0.2,15.0,1.9,38.4,99.6
+Spots,512,0.0,40.0,1.26,25.6,87.0
+Spots,512,0.2,60.0,1.9,38.4,94.7
+Spots,640,0.0,24.0,1.19,24.0,87.8
+Spots,640,0.2,32.0,1.58,32.0,97.1
+Spots,1024,0.0,12.0,1.52,30.7,93.9
+Spots,1024,0.2,15.0,1.9,38.4,98.7

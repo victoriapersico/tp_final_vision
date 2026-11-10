@@ -1,0 +1,11 @@
+dataset,control,valor,detalle
+Holes,"pares de cajas con IoU >= 0,5 (posible duplicado)",1,20260224_092807_f33c0705_front_nobg_png
+Holes,"pares de cajas superpuestas con 0 < IoU < 0,5",7,
+Holes,pares de cajas anidadas (una dentro de otra),0,
+Holes,cajas con algún lado < 4 px,6,
+Holes,capturas con alguna caja de lado < 4 px,5,
+Spots,"pares de cajas con IoU >= 0,5 (posible duplicado)",0,
+Spots,"pares de cajas superpuestas con 0 < IoU < 0,5",196,
+Spots,pares de cajas anidadas (una dentro de otra),2,
+Spots,cajas con algún lado < 4 px,227,
+Spots,capturas con alguna caja de lado < 4 px,61,

@@ -1,0 +1,21 @@
+dataset,umbral,defectos,total,porcentaje
+Holes,lado equivalente < 8 px,63,785,8.0
+Holes,lado equivalente < 16 px,247,785,31.5
+Holes,COCO small: área < 32² px,457,785,58.2
+Holes,COCO medium: 32² ≤ área < 96² px,247,785,31.5
+Holes,COCO large: área ≥ 96² px,81,785,10.3
+Holes,lado menor (mín. de ancho y alto) < 4 px,6,785,0.8
+Holes,lado menor (mín. de ancho y alto) < 8 px,102,785,13.0
+Holes,"área relativa < 0,01 %",429,785,54.6
+Holes,"área relativa < 0,1 %",696,785,88.7
+Holes,área relativa < 1 %,782,785,99.6
+Spots,lado equivalente < 8 px,546,2498,21.9
+Spots,lado equivalente < 16 px,1132,2498,45.3
+Spots,COCO small: área < 32² px,1668,2498,66.8
+Spots,COCO medium: 32² ≤ área < 96² px,552,2498,22.1
+Spots,COCO large: área ≥ 96² px,278,2498,11.1
+Spots,lado menor (mín. de ancho y alto) < 4 px,227,2498,9.1
+Spots,lado menor (mín. de ancho y alto) < 8 px,727,2498,29.1
+Spots,"área relativa < 0,01 %",1599,2498,64.0
+Spots,"área relativa < 0,1 %",2194,2498,87.8
+Spots,área relativa < 1 %,2462,2498,98.6

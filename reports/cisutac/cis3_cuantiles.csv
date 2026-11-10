@@ -1,0 +1,19 @@
+dataset,medida,unidad,n,p10,p50,p90,min,max
+Holes,defectos_por_imagen,instancias,407,1.0,1.0,4.0,1.0,30.0
+Holes,ancho_caja,px,785,8.5,23.4,91.9,1.82,767.0
+Holes,alto_caja,px,785,8.1,26.25,130.4,2.5,810.0
+Holes,lado_equivalente,px,785,8.923,24.73,100.0,3.26,761.5
+Holes,area_caja,px²,785,79.62,611.7,10000.0,10.62,579900.0
+Holes,area_caja_rel,% de la imagen,785,0.0009599,0.007491,0.1206,0.0001281,6.991
+Holes,relacion_aspecto,ancho/alto,785,0.3804,0.9167,1.877,0.09395,9.464
+Holes,area_poligono,px²,2,52910.0,241000.0,429100.0,5884.0,476100.0
+Holes,area_poligono_sobre_caja,fracción,2,0.5876,0.6913,0.7951,0.5616,0.8211
+Spots,defectos_por_imagen,instancias,486,1.0,3.0,11.5,1.0,80.0
+Spots,ancho_caja,px,2498,4.887,18.15,99.75,1.33,1181.0
+Spots,alto_caja,px,2498,4.704,18.72,121.0,0.91,1117.0
+Spots,lado_equivalente,px,2498,4.932,18.19,103.6,1.287,625.7
+Spots,area_caja,px²,2498,24.33,330.7,10730.0,1.656,391500.0
+Spots,area_caja_rel,% de la imagen,2498,0.0002933,0.004014,0.1306,1.997e-05,4.72
+Spots,relacion_aspecto,ancho/alto,2498,0.435,0.9369,2.128,0.02439,25.0
+Spots,area_poligono,px²,50,1074.0,3132.0,8039.0,130.0,54210.0
+Spots,area_poligono_sobre_caja,fracción,50,0.3223,0.5654,0.751,0.1119,0.8304

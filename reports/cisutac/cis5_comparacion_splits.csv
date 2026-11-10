@@ -1,0 +1,17 @@
+dataset,variante,split,capturas,prendas,dias,instancias,dias_compartidos_con_otros_splits,pct_lado_menor_16px,lado_px_mediana,dist_tamanos_vs_total
+Holes,oficial,train,375,374,13,721,9,30.2,25.6,0.014
+Holes,oficial,valid,32,32,10,64,9,45.3,20.1,0.159
+Holes,test_mayo,train,322,321,12,652,9,33.4,23.4,0.036
+Holes,test_mayo,valid,32,32,10,64,9,45.3,20.1,0.159
+Holes,test_mayo,test,53,53,1,69,0,0.0,62.7,0.379
+Holes,propuesta,train,300,299,6,589,0,32.4,24.3,0.01
+Holes,propuesta,valid,43,43,3,71,0,26.8,32.0,0.089
+Holes,propuesta,test,64,64,5,125,0,29.6,26.5,0.037
+Spots,oficial,train,448,448,16,2242,9,46.0,17.8,0.009
+Spots,oficial,valid,38,38,9,256,9,39.1,22.0,0.078
+Spots,test_mayo,train,382,382,13,2027,9,48.2,16.7,0.029
+Spots,test_mayo,valid,38,38,9,256,9,39.1,22.0,0.078
+Spots,test_mayo,test,66,66,3,215,0,25.1,34.5,0.202
+Spots,propuesta,train,361,361,8,1903,0,44.9,18.4,0.008
+Spots,propuesta,valid,59,59,4,284,0,48.6,16.5,0.037
+Spots,propuesta,test,66,66,4,311,0,45.0,17.5,0.013
