@@ -1,0 +1,7 @@
+dataset,clases,split,archivos,archivos_original,archivos_640,capturas,capturas_sin_640,capturas_irregulares,prendas,capturas_sin_id_prenda,instancias_todas_las_copias,instancias_original,poligonos_original,imagenes_sin_instancias,labels_faltantes,labels_sin_imagen,filas_malformadas,instancias_coords_invalidas,imagenes_exif_rotadas,resoluciones_original
+Holes,Hole,train,697,375,322,375,53,0,374,0,1369,721,2,0,0,0,0,0,0,2160x3840: 374; 1920x1080: 1
+Holes,Hole,valid,64,32,32,32,0,0,32,0,128,64,0,0,0,0,0,0,0,2160x3840: 32
+Holes,Hole,total,761,407,354,407,53,0,406,0,1497,785,2,0,0,0,0,0,0,2160x3840: 406; 1920x1080: 1
+Spots,Spot,train,830,448,382,448,66,0,448,0,4265,2242,37,0,0,0,0,0,0,2160x3840: 446; 1080x1920: 2
+Spots,Spot,valid,76,38,38,38,0,0,38,0,512,256,13,0,0,0,0,0,0,2160x3840: 38
+Spots,Spot,total,906,486,420,486,66,0,486,0,4777,2498,50,0,0,0,0,0,0,2160x3840: 484; 1080x1920: 2
