@@ -1,0 +1,263 @@
+{
+  "inventario": [
+    {
+      "unidad": "originales",
+      "cantidad": 709,
+      "detalle": "PNG 1792x1024"
+    },
+    {
+      "unidad": "originales_normales_csv",
+      "cantidad": 507,
+      "detalle": "sin defectos según CSV"
+    },
+    {
+      "unidad": "originales_defectuosas_csv",
+      "cantidad": 202,
+      "detalle": "con defectos según CSV"
+    },
+    {
+      "unidad": "mascaras_highres",
+      "cantidad": 204,
+      "detalle": "incluye 2 huérfanas"
+    },
+    {
+      "unidad": "anotaciones_highres_coco",
+      "cantidad": 361,
+      "detalle": "bbox + polígono"
+    },
+    {
+      "unidad": "patches_totales",
+      "cantidad": 19852,
+      "detalle": "todos 256x256"
+    },
+    {
+      "unidad": "train_good",
+      "cantidad": 14196,
+      "detalle": "estructura MVTec"
+    },
+    {
+      "unidad": "test_good",
+      "cantidad": 4969,
+      "detalle": "estructura MVTec"
+    },
+    {
+      "unidad": "test_defect",
+      "cantidad": 687,
+      "detalle": "estructura MVTec"
+    },
+    {
+      "unidad": "ground_truth_defect",
+      "cantidad": 687,
+      "detalle": "estructura MVTec"
+    },
+    {
+      "unidad": "anotaciones_patches_coco",
+      "cantidad": 782,
+      "detalle": "un patch puede contener varias instancias"
+    }
+  ],
+  "rollos": [
+    {
+      "roll_id": "Rollo1A",
+      "originales": 87,
+      "normales": 66,
+      "defectuosas": 21,
+      "instancias": 23
+    },
+    {
+      "roll_id": "Rollo2A",
+      "originales": 82,
+      "normales": 55,
+      "defectuosas": 27,
+      "instancias": 48
+    },
+    {
+      "roll_id": "Rollo3A",
+      "originales": 20,
+      "normales": 13,
+      "defectuosas": 7,
+      "instancias": 17
+    },
+    {
+      "roll_id": "Rollo4A",
+      "originales": 170,
+      "normales": 92,
+      "defectuosas": 78,
+      "instancias": 155
+    },
+    {
+      "roll_id": "Rollo5A",
+      "originales": 33,
+      "normales": 18,
+      "defectuosas": 15,
+      "instancias": 38
+    },
+    {
+      "roll_id": "Rollo6A",
+      "originales": 124,
+      "normales": 96,
+      "defectuosas": 28,
+      "instancias": 35
+    },
+    {
+      "roll_id": "Rollo7A",
+      "originales": 193,
+      "normales": 167,
+      "defectuosas": 26,
+      "instancias": 45
+    }
+  ],
+  "canales_muestra": {
+    "n": 70,
+    "rgb": 70,
+    "canales_identicos": 70
+  },
+  "cuantiles": [
+    {
+      "medida": "defectos_por_original_defectuosa",
+      "unidad": "instancias",
+      "n": 202,
+      "p10": 1.0,
+      "p50": 1.0,
+      "p90": 3.0,
+      "min": 1.0,
+      "max": 8.0
+    },
+    {
+      "medida": "ancho_bbox_highres",
+      "unidad": "px",
+      "n": 361,
+      "p10": 19.0,
+      "p50": 45.0,
+      "p90": 916.0,
+      "min": 3.0,
+      "max": 1792.0
+    },
+    {
+      "medida": "alto_bbox_highres",
+      "unidad": "px",
+      "n": 361,
+      "p10": 17.0,
+      "p50": 43.0,
+      "p90": 156.0,
+      "min": 3.0,
+      "max": 1024.0
+    },
+    {
+      "medida": "lado_equivalente_bbox_highres",
+      "unidad": "px",
+      "n": 361,
+      "p10": 19.4936,
+      "p50": 47.2864,
+      "p90": 256.92,
+      "min": 3.0,
+      "max": 1354.62
+    },
+    {
+      "medida": "area_bbox_highres",
+      "unidad": "px²",
+      "n": 361,
+      "p10": 380.0,
+      "p50": 2236.0,
+      "p90": 66008.0,
+      "min": 9.0,
+      "max": 1835010.0
+    },
+    {
+      "medida": "area_poligono_highres",
+      "unidad": "px²",
+      "n": 361,
+      "p10": 290.0,
+      "p50": 1272.5,
+      "p90": 16157.5,
+      "min": 2.0,
+      "max": 95279.0
+    },
+    {
+      "medida": "area_poligono_highres_rel",
+      "unidad": "% de original",
+      "n": 361,
+      "p10": 0.0158037,
+      "p50": 0.0693457,
+      "p90": 0.880514,
+      "min": 0.000108991,
+      "max": 5.19229
+    },
+    {
+      "medida": "area_mascara_patch",
+      "unidad": "px²",
+      "n": 687,
+      "p10": 337.2,
+      "p50": 2801.0,
+      "p90": 5529.0,
+      "min": 1.0,
+      "max": 16769.0
+    },
+    {
+      "medida": "area_mascara_patch_rel",
+      "unidad": "% de patch",
+      "n": 687,
+      "p10": 0.514526,
+      "p50": 4.27399,
+      "p90": 8.43658,
+      "min": 0.00152588,
+      "max": 25.5875
+    }
+  ],
+  "mascaras_huerfanas": [
+    {
+      "archivo": "Rollo2A_0000031_D_07-05-2024_10-39-06.546.png",
+      "pixeles_no_cero": 116837,
+      "valor_min": 0,
+      "valor_max": 255,
+      "en_images": false,
+      "en_csv": false,
+      "en_coco": false,
+      "recomendacion": "excluir: máscara huérfana sin imagen ni metadatos"
+    },
+    {
+      "archivo": "Rollo2A_0000032_D_07-05-2024_10-39-07.598.png",
+      "pixeles_no_cero": 25727,
+      "valor_min": 0,
+      "valor_max": 255,
+      "en_images": false,
+      "en_csv": false,
+      "en_coco": false,
+      "recomendacion": "excluir: máscara huérfana sin imagen ni metadatos"
+    }
+  ],
+  "trazabilidad": [
+    {
+      "tipo": "test_defect",
+      "patches": 687,
+      "imagenes_madre": 202
+    },
+    {
+      "tipo": "test_good",
+      "patches": 4969,
+      "imagenes_madre": 202
+    },
+    {
+      "tipo": "train_good",
+      "patches": 14196,
+      "imagenes_madre": 507
+    }
+  ],
+  "intersecciones": [
+    {
+      "tipo_a": "test_defect",
+      "tipo_b": "test_good",
+      "imagenes_madre_compartidas": 202
+    },
+    {
+      "tipo_a": "test_defect",
+      "tipo_b": "train_good",
+      "imagenes_madre_compartidas": 0
+    },
+    {
+      "tipo_a": "test_good",
+      "tipo_b": "train_good",
+      "imagenes_madre_compartidas": 0
+    }
+  ]
+}

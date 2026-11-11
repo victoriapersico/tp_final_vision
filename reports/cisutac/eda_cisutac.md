@@ -13,14 +13,22 @@ python scripts/generate_cisutac_eda.py
 - Todo el análisis y los conteos usan la **versión original** de cada captura (2160×3840 salvo 3 excepciones). La copia de 640×640 se documenta en CIS-1 y sólo se usa en CIS-4 como ejemplo real de resize, en los pares cuyas cajas coinciden.
 - Los resultados viven en `src/eda_utils.py` y en esta carpeta. El notebook principal lo integra la Integrante 4.
 
+### Revisión y decisiones aprobadas — 11 de noviembre de 2026
+
+- Se validó la unidad experimental y se aprobó usar exclusivamente **407 capturas originales / 785 agujeros** y **486 capturas originales / 2.498 manchas**. Las copias de 640×640 no son observaciones independientes.
+- Se aprobó como **split CISUTAC v1** el manifiesto `cis5_split_propuesto.csv`: Holes 300/43/64 y Spots 361/59/66 capturas en train/valid/test. La revisión confirmó que no comparte capturas, fechas ni IDs de sesión/prenda entre particiones. El manifiesto queda congelado antes del entrenamiento y los originales no se modifican.
+- Se aprobó el experimento posterior **foto completa con lado mayor 640 vs. entrenamiento e inferencia por tiles**, comenzando con tiles de 640 y 20 % de solapamiento. Los parámetros alternativos se eligen sólo con valid; el test se reserva para la medición final.
+- Esta aprobación no convierte la simulación geométrica en un resultado de detección: la mejora en `AP_small` y recall debe medirse con modelos entrenados bajo cada protocolo. El baseline preliminar de este documento no es el resultado final.
+- Limitación residual: la revisión visual de identidad no es exhaustiva. Si aparece una misma prenda en días distintos, debe versionarse el manifiesto antes del entrenamiento final, sin usar resultados de test para decidir el cambio.
+
 ## Resumen para el equipo
 
 - **Unidad real de análisis:** 407 capturas con 785 agujeros y 486 capturas con 2.498 manchas, en versión original. Casi la mitad de los archivos (354 y 420) son copias de 640×640 de las mismas fotos (CIS-1).
 - **Los defectos son chicos aun a resolución completa:** lado mediano de 25 px en Holes y 18 px en Spots, en fotos de 2160×3840. Son *small* de COCO el 58 % y el 67 %, respectivamente (CIS-3).
 - **El resize a 640, la entrada por defecto de YOLO, los vuelve casi invisibles:** lado mediano de 4,2 y 3,0 px. El 71 % y el 77 % quedan bajo 8 px, menos que una celda de stride 8. Con tiles de 640 y 20 % de solapamiento conservan su tamaño, a cambio de unas 32 veces más píxeles procesados (CIS-4).
-- **Incluso un detector perfecto que sólo se corre 1 px tendría a 640 un recall de apenas 39 % y 30 %** a IoU 0,5. A resolución nativa, ese mismo error daría 98 % y 88 % (CIS-6). **Esto justifica que el tiling sea obligatorio.**
+- **Incluso un detector perfecto que sólo se corre 1 px tendría a 640 un recall de apenas 39 % y 30 %** a IoU 0,5. A resolución nativa, ese mismo error daría 98 % y 88 % (CIS-6). **Esto justifica evaluar el tiling como experimento central; su beneficio todavía debe medirse.**
 - **Los defectos son difíciles por tamaño y por contraste.** Las anotaciones parecen exhaustivas, incluso en puntos de 3–4 px, y no hay duplicados exactos (CIS-2).
-- **El split oficial no es independiente.** Train y valid comparten días y al menos una prenda, porque el código hex identifica una sesión de fotos y no la prenda física. Además, el tamaño de los defectos cambia con el tiempo, así que un test por fecha no tendría defectos chicos. Se propone **train/valid/test agrupados por día y con la misma distribución de tamaños** (CIS-5), pendiente de aprobación.
+- **El split oficial no es independiente.** Train y valid comparten días y al menos una prenda, porque el código hex identifica una sesión de fotos y no la prenda física. Además, el tamaño de los defectos cambia con el tiempo, así que un test por fecha no tendría defectos chicos. Se aprobó el **split CISUTAC v1**, agrupado por día y con una distribución de tamaños comparable (CIS-5).
 - **Métricas propuestas:** mAP@0.5, mAP@0.5:0.95, precisión/recall/F1, AP_small **en coordenadas originales**, recall por rango de tamaño y tiempo por imagen, con intervalos por bootstrap (CIS-6).
 - **Baseline preliminar (YOLO11n, foto completa a 640, sólo valid): no encuentra ningún defecto de menos de 32 px**, que son la mitad de los agujeros y el 70 % de las manchas de valid. Da mAP@0.5 de 0,032 (Holes) y 0,019 (Spots), con AP_small de 0. Correr ese mismo modelo con tiles tampoco alcanza: aparece algún defecto chico, pero suben los falsos positivos y baja el mAP. **El experimento de tiling tiene que entrenar con tiles**, no sólo inferir con ellos.
 
@@ -423,7 +431,7 @@ Esto se desprende de la definición de IoU vista en el tutorial de detección. L
 ### Unidad de evaluación, splits e incertidumbre
 
 - **Unidad:** la captura original. Las métricas se calculan sobre todas las cajas reales del split, y las copias de 640 se excluyen.
-- **Splits:** los del manifiesto de CIS-5, pendiente de aprobación.
+- **Splits:** los del manifiesto CISUTAC v1 de CIS-5, aprobado y congelado antes del entrenamiento.
   - Valid se usa para elegir el modelo, el umbral de confianza, el tamaño y solapamiento de los tiles y las épocas.
   - Test se usa una sola vez al final, con el mismo conjunto para el baseline y para la versión con tiles.
 - **Incertidumbre:** el test es chico (64 y 66 capturas). Se propone un bootstrap por imagen: remuestrear capturas con reposición unas 1000 veces y reportar intervalos del 95 % para mAP@0.5, AP_small y recall. Si los intervalos de baseline y tiles se superponen, no se puede afirmar una mejora.
@@ -537,7 +545,7 @@ Con sólo tiles, los objetos más grandes que un tile quedan fragmentados, como 
 
 ## Baseline preliminar: foto completa a 640 (sólo valid)
 
-Es el baseline de la semana 2 del plan: YOLO11n preentrenado en COCO y ajustado con la foto completa, con lado mayor 640 y sin tiles. **Es preliminar.** Usa el split propuesto en CIS-5, que todavía no está aprobado, y **el test no se usó**. Valid sirvió para elegir la época y el umbral de confianza, así que estos números son optimistas.
+Es el baseline de la semana 2 del plan: YOLO11n preentrenado en COCO y ajustado con la foto completa, con lado mayor 640 y sin tiles. **Es preliminar.** Usa el split CISUTAC v1 de CIS-5, aprobado después de esta corrida, y **el test no se usó**. Valid sirvió para elegir la época y el umbral de confianza, así que estos números son optimistas.
 
 ### Configuración
 
@@ -598,22 +606,22 @@ Defectos encontrados sobre el total de valid, por lado equivalente en la origina
 
 ### Limitaciones
 
-- Split sin aprobar, una sola semilla y YOLO11n sin ajustar hiperparámetros.
+- Split actualmente aprobado, pero una sola semilla y YOLO11n sin ajustar hiperparámetros.
 - Valid se usó para elegir la época y el umbral, así que las métricas son optimistas. El test queda para el modelo final.
 - Este baseline no mide la caída entre dominios. Eso corresponde a INT-3, con el detector entrenado en datos industriales.
 
 ## Pendientes y decisiones para el equipo
 
-| # | Tema | Quién | Bloquea entrenar |
+| # | Tema | Quién | Estado / impacto |
 |---|---|---|---|
-| 1 | Aprobar el split propuesto (CIS-5) o elegir una alternativa | Los 4 (protocolo de la Integrante 4) | **Sí** |
+| 1 | Split propuesto (CIS-5) | Revisión del equipo | **Resuelto:** aprobado como CISUTAC v1 y congelado antes del entrenamiento |
 | 2 | Aprobar las definiciones de defecto pequeño (< 32 px) y diminuto (< 16 px) en la original | Los 4 | **Sí** |
-| 3 | Confirmar que el entrenamiento usa sólo las versiones originales, sin las copias de 640 | Los 4 | **Sí** |
-| 4 | Usar el día como unidad de agrupación, no el código hex (que no identifica la prenda física) | Integrante 4 | Sí |
+| 3 | Usar sólo originales, sin copias de 640 | Revisión del equipo | **Resuelto:** aprobado |
+| 4 | Usar el día como unidad de agrupación, no el código hex | Revisión del equipo | **Resuelto:** aplicado en CISUTAC v1 |
 | 5 | Corregir en `dataset_audit.md` y `notes/AGENTS.md` que 761/906 son archivos con copias, no imágenes distintas (407/486) | Integrante 4 al integrar | No |
 | 6 | Integrar figuras y tablas de esta carpeta al notebook principal | Integrante 4 | No |
 | 7 | Si frente y espalda llevan códigos distintos (remera amarilla) y si hay manchas aplicadas a propósito. Ni el README ni Hugging Face lo aclaran, y la página de Roboflow no es accesible; se podría consultar a Wargön Innovation | Integrante 1 | No |
 | 8 | Decidir qué hacer con la posible caja duplicada de Holes (`20260224_092807_f33c0705`); el original no se modifica | Los 4 | No |
 | 9 | Agregar a `requirements.txt` las dependencias de la etapa siguiente (versiones probadas: `pycocotools==2.0.11`, `ultralytics==8.4.209`, `sahi==0.14.0`, que traen torch). Definir también dónde se entrena: el baseline tardó 18 y 48 minutos en una Mac M2, y con tiles hay muchas más imágenes de entrenamiento | Los 4 | Sí, para entrenar |
-| 10 | Diseñar el entrenamiento con tiles: el baseline muestra que inferir con tiles sin entrenar con ellos no alcanza. Falta elegir el modelo base (por ejemplo, YOLO11n o YOLO11s, los de clase) y cuántos tiles sin defectos incluir | Los 4 (diseño experimental) | Sí, para entrenar |
-| 11 | Revisar el baseline preliminar y decidir si se reentrena cuando se apruebe el split | Los 4 | No |
+| 10 | Diseñar el entrenamiento con tiles: se aprobó comparar contra foto completa y comenzar con tiles 640/20 %, pero falta elegir el modelo base y cuántos tiles sin defectos incluir | Los 4 (diseño experimental) | Sí, para entrenar |
+| 11 | Revisar el baseline preliminar y decidir si se reentrena con más de una semilla sobre el split ya aprobado | Los 4 | No |

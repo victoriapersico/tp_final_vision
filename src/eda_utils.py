@@ -14,7 +14,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import median, quantiles
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".webp"}
@@ -140,6 +140,121 @@ def analyze_raw_fabrid(root: Path):
         "patches": {"counts": dict(counts), "unique_parents": {k: len(v) for k, v in parents_by_type.items()},
                     "parent_overlap_between_splits": overlap},
     }
+
+
+def raw_fabrid_data(root: Path):
+    """Carga los CSV y COCO de RAW-FABRID sin modificar ningún archivo."""
+    with (root / "RAW_FABRID_HighRes_Metadata.csv").open(newline="") as handle:
+        high = list(csv.DictReader(handle))
+    with (root / "RAW_FABRID_Patches_Metadata.csv").open(newline="") as handle:
+        patches = list(csv.DictReader(handle))
+    with (root / "RAW_FABRID_HighRes_COCO.json").open() as handle:
+        high_coco = json.load(handle)
+    with (root / "RAW_FABRID_Patches_COCO.json").open() as handle:
+        patch_coco = json.load(handle)
+    return high, patches, high_coco, patch_coco
+
+
+def raw_fabrid_size_quantiles(root: Path):
+    """Percentiles RAW-3 para cajas/polígonos high-res y áreas de patches defectuosos."""
+    high, patches, high_coco, _ = raw_fabrid_data(root)
+    annotations = high_coco["annotations"]
+    measures = {
+        ("defectos_por_original_defectuosa", "instancias"):
+            [int(row["num_defects"]) for row in high if row["has_defect"].lower() == "true"],
+        ("ancho_bbox_highres", "px"): [float(a["bbox"][2]) for a in annotations],
+        ("alto_bbox_highres", "px"): [float(a["bbox"][3]) for a in annotations],
+        ("lado_equivalente_bbox_highres", "px"):
+            [(float(a["bbox"][2]) * float(a["bbox"][3])) ** 0.5 for a in annotations],
+        ("area_bbox_highres", "px²"): [float(a["bbox"][2]) * float(a["bbox"][3]) for a in annotations],
+        ("area_poligono_highres", "px²"): [float(a["area"]) for a in annotations],
+        ("area_poligono_highres_rel", "% de original"):
+            [100 * float(a["area"]) / (1792 * 1024) for a in annotations],
+        ("area_mascara_patch", "px²"): [float(row["defect_area"]) for row in patches if row["type"] == "test_defect"],
+        ("area_mascara_patch_rel", "% de patch"):
+            [100 * float(row["defect_area"]) / (256 * 256) for row in patches if row["type"] == "test_defect"],
+    }
+    rows = []
+    for (measure, unit), values in measures.items():
+        p10, p50, p90 = deciles(values)
+        rows.append({"medida": measure, "unidad": unit, "n": len(values),
+                     **{key: float(f"{value:.6g}") for key, value in
+                        (("p10", p10), ("p50", p50), ("p90", p90),
+                         ("min", min(values)), ("max", max(values)))}})
+    return rows
+
+
+def raw_fabrid_orphan_masks(root: Path):
+    """Cruza máscaras high-res con imágenes, CSV y COCO para explicar el caso 202/204."""
+    high, _, high_coco, _ = raw_fabrid_data(root)
+    csv_names = {row["filename"] for row in high}
+    defective = {row["filename"] for row in high if row["has_defect"].lower() == "true"}
+    coco_names = {row["file_name"] for row in high_coco["images"]}
+    image_names = {path.name for path in (root / "images").glob("*.png")}
+    rows = []
+    for path in sorted((root / "masks").glob("*.png")):
+        if path.name in defective:
+            continue
+        with Image.open(path) as mask:
+            histogram = mask.histogram()
+            nonzero = sum(histogram[1:])
+            extrema = mask.getextrema()
+        rows.append({"archivo": path.name, "pixeles_no_cero": nonzero,
+                     "valor_min": extrema[0], "valor_max": extrema[1],
+                     "en_images": path.name in image_names, "en_csv": path.name in csv_names,
+                     "en_coco": path.name in coco_names,
+                     "recomendacion": "excluir: máscara huérfana sin imagen ni metadatos"})
+    return rows
+
+
+def raw_fabrid_traceability(root: Path):
+    """Tablas RAW-5 de patches/padres/rollos y sus intersecciones."""
+    _, patches, _, _ = raw_fabrid_data(root)
+    parents = defaultdict(set)
+    counts = Counter()
+    by_type_roll = Counter()
+    for row in patches:
+        kind, parent = row["type"], row["parent_raw"]
+        roll = parent.split("_")[0]
+        parents[kind].add(parent)
+        counts[kind] += 1
+        by_type_roll[(kind, roll)] += 1
+    summary = [{"tipo": kind, "patches": counts[kind], "imagenes_madre": len(parents[kind])}
+               for kind in sorted(parents)]
+    roll_rows = [{"tipo": kind, "roll_id": roll, "patches": count,
+                  "imagenes_madre": len({row["parent_raw"] for row in patches
+                                         if row["type"] == kind and row["parent_raw"].split("_")[0] == roll})}
+                 for (kind, roll), count in sorted(by_type_roll.items())]
+    intersections = []
+    kinds = sorted(parents)
+    for index, left in enumerate(kinds):
+        for right in kinds[index + 1:]:
+            intersections.append({"tipo_a": left, "tipo_b": right,
+                                  "imagenes_madre_compartidas": len(parents[left] & parents[right])})
+    return summary, roll_rows, intersections
+
+
+def raw_fabrid_channel_check(root: Path, samples_per_roll: int = 10):
+    """Comprueba en una muestra estratificada si los PNG RGB tienen canales idénticos."""
+    high, _, _, _ = raw_fabrid_data(root)
+    by_roll = defaultdict(list)
+    for row in high:
+        by_roll[row["roll_id"]].append(row["filename"])
+    rows = []
+    for roll, names in sorted(by_roll.items()):
+        # Selección determinística y repartida a lo largo de cada rollo.
+        positions = sorted({round(i * (len(names) - 1) / max(samples_per_roll - 1, 1))
+                            for i in range(min(samples_per_roll, len(names)))})
+        for position in positions:
+            name = names[position]
+            with Image.open(root / "images" / name) as image:
+                bands = image.split()
+                equal = (image.mode == "RGB" and
+                         ImageChops.difference(bands[0], bands[1]).getbbox() is None and
+                         ImageChops.difference(bands[0], bands[2]).getbbox() is None)
+                rows.append({"roll_id": roll, "archivo": name, "modo_pil": image.mode,
+                             "canales_identicos": equal})
+    return rows
 
 
 # Nombre CISUTAC: <fecha>_<hora>_<id prenda: 8 hex>_<vista>_nobg_png.rf.<hash Roboflow>

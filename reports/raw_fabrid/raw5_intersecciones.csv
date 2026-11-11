@@ -1,0 +1,4 @@
+tipo_a,tipo_b,imagenes_madre_compartidas
+test_defect,test_good,202
+test_defect,train_good,0
+test_good,train_good,0

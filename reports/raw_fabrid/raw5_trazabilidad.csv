@@ -1,0 +1,4 @@
+tipo,patches,imagenes_madre
+test_defect,687,202
+test_good,4969,202
+train_good,14196,507

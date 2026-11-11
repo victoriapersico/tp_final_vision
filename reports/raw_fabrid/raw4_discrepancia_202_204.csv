@@ -1,0 +1,3 @@
+archivo,pixeles_no_cero,valor_min,valor_max,en_images,en_csv,en_coco,recomendacion
+Rollo2A_0000031_D_07-05-2024_10-39-06.546.png,116837,0,255,False,False,False,excluir: máscara huérfana sin imagen ni metadatos
+Rollo2A_0000032_D_07-05-2024_10-39-07.598.png,25727,0,255,False,False,False,excluir: máscara huérfana sin imagen ni metadatos

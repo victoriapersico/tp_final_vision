@@ -1,0 +1,10 @@
+medida,unidad,n,p10,p50,p90,min,max
+defectos_por_original_defectuosa,instancias,202,1.0,1.0,3.0,1.0,8.0
+ancho_bbox_highres,px,361,19.0,45.0,916.0,3.0,1792.0
+alto_bbox_highres,px,361,17.0,43.0,156.0,3.0,1024.0
+lado_equivalente_bbox_highres,px,361,19.4936,47.2864,256.92,3.0,1354.62
+area_bbox_highres,px²,361,380.0,2236.0,66008.0,9.0,1835010.0
+area_poligono_highres,px²,361,290.0,1272.5,16157.5,2.0,95279.0
+area_poligono_highres_rel,% de original,361,0.0158037,0.0693457,0.880514,0.000108991,5.19229
+area_mascara_patch,px²,687,337.2,2801.0,5529.0,1.0,16769.0
+area_mascara_patch_rel,% de patch,687,0.514526,4.27399,8.43658,0.00152588,25.5875

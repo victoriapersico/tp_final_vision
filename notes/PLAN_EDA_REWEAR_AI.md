@@ -6,6 +6,24 @@
 
 > **Instrucción para todo el equipo y sus agentes:** este documento es el plan común del EDA. Antes de crear archivos, revisar el repositorio `tp_final_vision`, el `README.md`, `notes/AGENTS.md` y los materiales de auditoría existentes. **Reutilizar y extender el EDA ya hecho**, no rehacerlo ni construir infraestructura innecesaria.
 
+## Actualización de estado — 11 de noviembre de 2026
+
+El bloque **Integrante 1 — CISUTAC (CIS-1 a CIS-6)** fue completado, revisado y aceptado para continuar el EDA. Se fijan estas decisiones antes de avanzar:
+
+1. **Unidad experimental:** usar solamente las capturas originales: **407 Holes / 785 instancias** y **486 Spots / 2.498 instancias**. Las copias de 640×640 de las mismas fotos no se usan como observaciones independientes ni se mezclan con los originales en entrenamiento/evaluación.
+2. **Split CISUTAC v1 aprobado:** usar el manifiesto derivado `reports/cisutac/cis5_split_propuesto.csv`, agrupado por día de captura. No modifica los datos oficiales. Queda congelado antes del entrenamiento: Holes 300/43/64 y Spots 361/59/66 capturas en train/valid/test. No hay fechas, capturas ni IDs de sesión/prenda repetidos entre particiones.
+3. **Experimento de escala aprobado:** comparar foto completa con lado mayor 640 frente a entrenamiento e inferencia mediante tiles. La configuración inicial de tiles es **640 px con 20 % de solapamiento**; tamaños/solapamientos alternativos se seleccionan únicamente con validación. El test queda reservado para la evaluación final.
+4. **Hipótesis a comprobar:** preservar la escala mediante tiles debe mejorar recall y AP de defectos pequeños respecto del resize completo, a cambio de mayor costo. Los cálculos geométricos del EDA justifican el experimento, pero no prueban todavía una mejora del modelo.
+5. **Siguiente bloque:** Integrante 2 continúa con RAW-FABRID (RAW-1 a RAW-6). No corresponde volver a ejecutar el inventario CISUTAC salvo que cambie la versión de los datos.
+
+La aprobación del split es metodológica y provisional respecto de identidad física: la búsqueda visual no fue exhaustiva y un código hexadecimal identifica una sesión, no necesariamente una prenda única. Si aparece evidencia concreta de la misma prenda en días distintos, se corrige el manifiesto **antes** del entrenamiento final y se registra una nueva versión; nunca se modifica mirando resultados del test.
+
+### Actualización Integrante 2 — RAW-FABRID
+
+El bloque **RAW-1 a RAW-6** también fue completado. Se confirmaron 709 originales (507 normales y 202 defectuosas), 19.852 patches, 361 instancias high-res y 687 patches defectuosos con máscara. Las dos máscaras adicionales son huérfanas no vacías, sin imagen, CSV ni COCO asociados; se conservan, pero se excluyen de los experimentos.
+
+El protocolo PatchCore primario queda definido a nivel de patch: entrenar sólo con `train/good`, evaluar con `test/good` y `test/defect`, y reportar AUROC de patch, AUROC de píxel y AUPRO. No hay madres compartidas entre train y test, pero todos los patches de test se agrupan en 202 madres y los siete rollos aparecen en ambos conjuntos. Por ello, la incertidumbre debe agruparse por `parent_raw` y los resultados deben desglosarse por rollo. Una evaluación auxiliar a nivel de original requerirá reservar madres normales completas mediante un manifiesto estratificado por rollo **antes** del entrenamiento.
+
 ---
 
 ## 0. Objetivo y alcance del proyecto
@@ -105,17 +123,17 @@ Antes de empezar con tareas específicas:
 
 **Objetivo:** justificar por qué el tamaño de los defectos exige estudiar la escala/tiling, y determinar qué evaluación supervisada es posible.
 
-- [ ] **CIS-1. Validar estructura y splits.** Confirmar las **761 imágenes de Holes** (697 train, 64 valid) y **906 de Spots** (830 train, 76 valid), sus etiquetas YOLO, categorías y ausencia de normales/test. Comparar con la auditoría; explicar solo discrepancias nuevas.
+- [x] **CIS-1. Validar estructura y splits.** Confirmar las **761 imágenes de Holes** (697 train, 64 valid) y **906 de Spots** (830 train, 76 valid), sus etiquetas YOLO, categorías y ausencia de normales/test. Comparar con la auditoría; explicar solo discrepancias nuevas.
   - **Entregable:** tabla de inventario simple de ambos datasets.
-- [ ] **CIS-2. Ver ejemplos con cajas.** Mostrar una grilla pequeña con imágenes reales de train/valid y sus bounding boxes, y otra con el zoom de la zona defectuosa. Incluir algunos casos fáciles, difíciles y con múltiples instancias; la selección debe ser reproducible.
+- [x] **CIS-2. Ver ejemplos con cajas.** Mostrar una grilla pequeña con imágenes reales de train/valid y sus bounding boxes, y otra con el zoom de la zona defectuosa. Incluir algunos casos fáciles, difíciles y con múltiples instancias; la selección debe ser reproducible.
   - **Entregable:** 2–3 figuras comentadas y breve nota sobre calidad/visibilidad de etiquetas.
-- [ ] **CIS-3. Distribución de defectos.** Calcular defectos por imagen, cantidad de cajas, ancho/alto absolutos, área absoluta y área relativa. Graficar histograma (escala logarítmica si ayuda) y reportar percentiles **p10, p50, p90**; separar Holes y Spots.
+- [x] **CIS-3. Distribución de defectos.** Calcular defectos por imagen, cantidad de cajas, ancho/alto absolutos, área absoluta y área relativa. Graficar histograma (escala logarítmica si ayuda) y reportar percentiles **p10, p50, p90**; separar Holes y Spots.
   - **Entregable:** tabla de cuantiles + 1–2 gráficos; porcentajes de defectos por debajo de umbrales documentados.
-- [ ] **CIS-4. Simular resize sin entrenar.** Para una selección representativa, calcular cómo cambia el **tamaño de los defectos en píxeles** al redimensionar la imagen completa a resoluciones candidatas (por ejemplo, lado máximo 640 y 1024, conservando proporción). Mostrar uno o dos ejemplos con zoom antes/después. No afirmar pérdida real de información sin observar el resultado; registrar si quedan cajas de pocos píxeles.
+- [x] **CIS-4. Simular resize sin entrenar.** Para una selección representativa, calcular cómo cambia el **tamaño de los defectos en píxeles** al redimensionar la imagen completa a resoluciones candidatas (por ejemplo, lado máximo 640 y 1024, conservando proporción). Mostrar uno o dos ejemplos con zoom antes/después. No afirmar pérdida real de información sin observar el resultado; registrar si quedan cajas de pocos píxeles.
   - **Entregable:** tabla comparativa de `w`, `h` y área en píxeles original vs. resize; implicación para resolución/tiling.
-- [ ] **CIS-5. Auditar splits y relaciones.** Buscar hashes exactos, nombres similares y, si es factible, posibles duplicados perceptuales. Si hay identificadores de prenda/sesión, proponer agrupación. No inventar identidades de prendas a partir de parecido visual ambiguo.
+- [x] **CIS-5. Auditar splits y relaciones.** Buscar hashes exactos, nombres similares y, si es factible, posibles duplicados perceptuales. Si hay identificadores de prenda/sesión, proponer agrupación. No inventar identidades de prendas a partir de parecido visual ambiguo.
   - **Entregable:** reporte de pares sospechosos y decisión **provisional** sobre test independiente (no aplicar un split final antes de consensuarlo).
-- [ ] **CIS-6. Propuesta de evaluación.** Explicar por qué el proyecto necesita evaluar por separado agujeros y manchas inicialmente; proponer `mAP@0.5`, `mAP@0.5:0.95`, precision, recall y una definición explícita de **defecto pequeño**. Aclarar que `AP_small` COCO tiene una convención propia (área menor a `32²` px en el sistema de coordenadas de la evaluación) y que los umbrales personalizados **se deben definir antes del entrenamiento**.
+- [x] **CIS-6. Propuesta de evaluación.** Explicar por qué el proyecto necesita evaluar por separado agujeros y manchas inicialmente; proponer `mAP@0.5`, `mAP@0.5:0.95`, precision, recall y una definición explícita de **defecto pequeño**. Aclarar que `AP_small` COCO tiene una convención propia (área menor a `32²` px en el sistema de coordenadas de la evaluación) y que los umbrales personalizados **se deben definir antes del entrenamiento**.
   - **Entregable:** 1 sección «Implicaciones para el baseline supervisado».
 
 **Criterio de terminado:** otra persona del equipo puede explicar, con números y ejemplos, **por qué no alcanza con hacer resize tradicional** y qué medición hará falta para verificar la mejora por tiles.
@@ -124,17 +142,17 @@ Antes de empezar con tareas específicas:
 
 **Objetivo:** determinar qué tan confiable es el benchmark para PatchCore y cómo evaluar anomalías sin fugas de información ni pseudorreplicación.
 
-- [ ] **RAW-1. Confirmar inventario existente.** Verificar 709 originales de 1792×1024, distribución normal/defectuosa, 19.852 parches, máscaras y agrupación por rollo. Documentar cómo están codificados los canales: PIL informa RGB, aunque las imágenes podrían ser visualmente monocromáticas.
+- [x] **RAW-1. Confirmar inventario existente.** Verificar 709 originales de 1792×1024, distribución normal/defectuosa, 19.852 parches, máscaras y agrupación por rollo. Documentar cómo están codificados los canales: PIL informa RGB, aunque las imágenes podrían ser visualmente monocromáticas.
   - **Entregable:** inventario resumido; no volver a generar el conteo masivo ya hecho si no cambió nada.
-- [ ] **RAW-2. Visualizar ejemplos correctamente.** Mostrar originales normales/defectuosos y superponer máscaras; añadir ejemplos de patches con y sin defecto y su relación con la imagen madre.
+- [x] **RAW-2. Visualizar ejemplos correctamente.** Mostrar originales normales/defectuosos y superponer máscaras; añadir ejemplos de patches con y sin defecto y su relación con la imagen madre.
   - **Entregable:** una grilla de originales/máscaras y otra de patches.
-- [ ] **RAW-3. Medir escala de anomalías.** A partir de COCO/máscaras, calcular área relativa, bbox y percentiles; comparar tamaño del defecto en imagen original vs. patch, **sin confundir un cambio de denominador con un cambio en el defecto físico**.
+- [x] **RAW-3. Medir escala de anomalías.** A partir de COCO/máscaras, calcular área relativa, bbox y percentiles; comparar tamaño del defecto en imagen original vs. patch, **sin confundir un cambio de denominador con un cambio en el defecto físico**.
   - **Entregable:** tabla de percentiles y conclusión sobre la utilidad de la resolución original/parches.
-- [ ] **RAW-4. Resolver discrepancia 202/204.** Revisar las dos imágenes indicadas en la auditoría, cruzando `has_defect`, COCO y máscaras. Documentar si se trata de discrepancia de metadatos, máscaras vacías, etc. **No cambiar etiquetas oficiales en esta etapa.**
+- [x] **RAW-4. Resolver discrepancia 202/204.** Revisar las dos imágenes indicadas en la auditoría, cruzando `has_defect`, COCO y máscaras. Documentar si se trata de discrepancia de metadatos, máscaras vacías, etc. **No cambiar etiquetas oficiales en esta etapa.**
   - **Entregable:** tabla «archivo → fuentes que concuerdan/discrepan → recomendación de tratamiento experimental».
-- [ ] **RAW-5. Auditar dependencia y posibles fugas.** Usar `parent_raw` y `roll_id` para comprobar la separación train/test de imágenes madres; observar que `test/good` y `test/defect` comparten imágenes madres de test, lo que **no es por sí mismo fuga train–test**, pero sí implica dependencia estadística. Verificar la composición por rollo.
+- [x] **RAW-5. Auditar dependencia y posibles fugas.** Usar `parent_raw` y `roll_id` para comprobar la separación train/test de imágenes madres; observar que `test/good` y `test/defect` comparten imágenes madres de test, lo que **no es por sí mismo fuga train–test**, pero sí implica dependencia estadística. Verificar la composición por rollo.
   - **Entregable:** tabla de imágenes madres/rollos por split, intersecciones y riesgo estadístico.
-- [ ] **RAW-6. Diseñar evaluación PatchCore (sin implementarlo).** Definir qué partición corresponde a `train/good`, qué conjuntos se usan para AUROC imagen, AUROC píxel y AUPRO, y a qué unidad corresponde cada métrica. **Importante:** el split de patches ofrecido por la fuente contiene parches normales incluso dentro de capturas defectuosas; decidir explícitamente si el AUROC será por **patch**, **imagen original** o ambos, y qué agregación requeriría el nivel original. Proponer evaluación por captura/rollo si resulta viable.
+- [x] **RAW-6. Diseñar evaluación PatchCore (sin implementarlo).** Definir qué partición corresponde a `train/good`, qué conjuntos se usan para AUROC imagen, AUROC píxel y AUPRO, y a qué unidad corresponde cada métrica. **Importante:** el split de patches ofrecido por la fuente contiene parches normales incluso dentro de capturas defectuosas; decidir explícitamente si el AUROC será por **patch**, **imagen original** o ambos, y qué agregación requeriría el nivel original. Proponer evaluación por captura/rollo si resulta viable.
   - **Entregable:** protocolo preliminar de anomalías y principales limitaciones.
 
 **Criterio de terminado:** el equipo puede describir **qué recibe PatchCore como datos normales, qué evalúa y cuáles son las unidades independientes**.
@@ -205,10 +223,10 @@ Para cada sección: **pregunta → cálculo/visualización → hallazgo → deci
 
 | Decisión | Hipótesis inicial | Qué tiene que confirmar el EDA |
 |---|---|---|
-| **Dataset supervisado principal** | CISUTAC Holes/Spots por separado | Calidad de boxes, agrupaciones y evaluación sin `test` oficial |
-| **Baseline supervisado** | Un detector preentrenado basado en CNN (p. ej., una única variante de YOLO) | Que el formato de anotación/splits y métricas sean adecuados; la arquitectura/loss específica se fija **después** del EDA |
-| **Escala / tiling** | Comparar foto completa redimensionada vs. tiles, eventualmente con SAHI | Qué tamaño absoluto tienen los defectos tras resize; rango sensato de tiles y solapamiento |
-| **Baseline de anomalías** | PatchCore con normales de RAW-FABRID | Integridad del protocolo MVTec y unidad de evaluación (patch/original/rollo) |
+| **Dataset supervisado principal** | **Aprobado:** CISUTAC Holes/Spots por separado, usando sólo originales | Split v1 agrupado por día en `reports/cisutac/cis5_split_propuesto.csv`; revisar sólo si aparece evidencia nueva de identidad física |
+| **Baseline supervisado** | **Aprobado en protocolo:** un detector preentrenado basado en CNN (baseline preliminar YOLO11n) | La configuración final y loss se documentan al iniciar entrenamiento; el resultado preliminar a 640 no es una métrica final |
+| **Escala / tiling** | **Aprobado:** foto completa a 640 vs. entrenamiento+inferencia por tiles; inicio 640/20 % | Elegir variantes sólo con valid; medir AP_small, recall por tamaño y costo en el test congelado |
+| **Baseline de anomalías** | **Protocolo EDA aprobado:** PatchCore con `train/good` de RAW-FABRID | Evaluación primaria por patch; incertidumbre agrupada por madre y desglose por rollo. El nivel original requiere un manifiesto auxiliar de madres normales |
 | **Comparación entre enfoques** | Mismo dominio FabriD | Normales comparables, etiquetas compatibles y splits agrupados por fuente |
 | **Transferencia industrial → ropa usada** | Prueba complementaria sin fine-tuning | Compatibilidad real de clases/salidas y existencia de métricas comparables |
 | **FabricSpotDefect** | Complemento, no núcleo | Si añade información útil sin sobrecargar el alcance |
@@ -274,9 +292,9 @@ El EDA se considera terminado cuando el equipo puede marcar **todo lo aplicable*
 ### Calidad y splits
 
 - [ ] Se investigaron los 14 posibles duplicados de FabriD y se definió cómo evitar leakage.
-- [ ] Se documentó la diferencia 202 vs. 204 de RAW-FABRID y su tratamiento experimental.
-- [ ] Se revisó trazabilidad `parent_raw`/`roll_id` y dependencia entre patches.
-- [ ] Se definió una política honesta para CISUTAC, que no tiene test oficial ni normales.
+- [x] Se documentó la diferencia 202 vs. 204 de RAW-FABRID y su tratamiento experimental.
+- [x] Se revisó trazabilidad `parent_raw`/`roll_id` y dependencia entre patches.
+- [x] Se definió una política honesta para CISUTAC, que no tiene test oficial ni normales.
 - [ ] No se trataron etiquetas faltantes/archivos sin cajas como negativos automáticamente.
 - [ ] Los splits futuros se podrán reproducir y no se cambian basándose en resultados del test.
 

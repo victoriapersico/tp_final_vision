@@ -1,0 +1,12 @@
+unidad,cantidad,detalle
+originales,709,PNG 1792x1024
+originales_normales_csv,507,sin defectos según CSV
+originales_defectuosas_csv,202,con defectos según CSV
+mascaras_highres,204,incluye 2 huérfanas
+anotaciones_highres_coco,361,bbox + polígono
+patches_totales,19852,todos 256x256
+train_good,14196,estructura MVTec
+test_good,4969,estructura MVTec
+test_defect,687,estructura MVTec
+ground_truth_defect,687,estructura MVTec
+anotaciones_patches_coco,782,un patch puede contener varias instancias
