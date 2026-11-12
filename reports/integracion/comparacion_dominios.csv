@@ -1,0 +1,4 @@
+dominio,dataset,captura,anotacion,normales_verificadas,uso,riesgo_principal
+Prendas usadas,CISUTAC Holes / Spots,"Prenda completa, fondo removido",Cajas YOLO,No,Detección supervisada y prueba de tiling,Defecto diminuto al reducir la foto
+Tejidos RGB variables,FabriD v3,Primer plano con cámara/teléfono,Polígonos YOLO-seg,607 concordantes,Segmentación y comparación con PatchCore,Atajos de resolución/lote y derivados entre splits
+Inspección industrial,RAW-FABRID,Line-scan controlado; apariencia monocroma,Máscaras y metadatos,Sí,Benchmark principal de PatchCore,Patches dependientes de la misma captura/rollo

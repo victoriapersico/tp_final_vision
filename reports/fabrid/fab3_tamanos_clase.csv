@@ -1,0 +1,6 @@
+clase,instancias,area_rel_p10_pct,area_rel_p50_pct,area_rel_p90_pct,lado_bbox_p10_px,lado_bbox_p50_px,lado_bbox_p90_px,instancias_area_menor_1pct,pct_area_menor_1pct
+Needle Mark Defect,636,0.1231,2.5487,8.0357,31.7,170.64,316.2,161,25.3
+hole Defect,568,0.0559,0.2171,1.1911,15.7,31.56,75.63,497,87.5
+missing yarn Defect,580,0.3138,1.181,3.4245,52.27,123.18,282.19,253,43.6
+stain Defect,718,0.1077,0.7247,4.0742,22.47,60.02,156.49,420,58.5
+TOTAL,2502,0.0948,0.9046,4.7679,21.55,83.75,241.19,1331,53.2

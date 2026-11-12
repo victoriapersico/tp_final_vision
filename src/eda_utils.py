@@ -735,3 +735,193 @@ def cisutac_split_summary(manifest, instances):
             "dist_tamanos_vs_total": round(size_distance(hist, reference), 3),
         })
     return rows
+
+
+FABRID_CLASSES = ["Needle Mark Defect", "hole Defect", "missing yarn Defect", "stain Defect"]
+
+
+def roboflow_source_id(path_or_name):
+    """Identificador de captura anterior al hash `.rf.` y al sufijo artificial `_jpg`."""
+    stem = Path(path_or_name).stem.split(".rf.")[0]
+    return stem[:-4] if stem.endswith("_jpg") else stem
+
+
+def fabrid_export_records(root: Path):
+    """Lee el export YOLO-seg de FabriD: una fila por imagen y otra por polígono."""
+    class_names = yolo_class_names(root / "data.yaml")
+    images, instances = [], []
+    for split in ("train", "valid", "test"):
+        for path in image_files(root / split / "images"):
+            label_path = root / split / "labels" / f"{path.stem}.txt"
+            lines = [line.split() for line in label_path.read_text().splitlines() if line.strip()]
+            with Image.open(path) as image:
+                width, height = image.size
+            classes = []
+            for line in lines:
+                class_id = int(float(line[0]))
+                coords = list(map(float, line[1:]))
+                points = list(zip(coords[::2], coords[1::2]))
+                xs, ys = coords[::2], coords[1::2]
+                area_rel = polygon_area(points)
+                classes.append(class_names[class_id])
+                instances.append({
+                    "split": split, "archivo": path.name, "source_id": roboflow_source_id(path),
+                    "path": path, "clase": class_names[class_id], "class_id": class_id,
+                    "img_ancho": width, "img_alto": height, "points": points,
+                    "area_poligono_rel": area_rel,
+                    "area_poligono_px": area_rel * width * height,
+                    "bbox_ancho_px": (max(xs) - min(xs)) * width,
+                    "bbox_alto_px": (max(ys) - min(ys)) * height,
+                })
+            images.append({
+                "split": split, "archivo": path.name, "source_id": roboflow_source_id(path),
+                "path": path, "label_path": label_path, "img_ancho": width, "img_alto": height,
+                "instancias": len(lines), "clases": sorted(set(classes)), "etiqueta_vacia": not lines,
+            })
+    return images, instances, class_names
+
+
+def fabrid_size_by_class(instances):
+    """FAB-3: percentiles de área poligonal y caja equivalente por clase."""
+    rows = []
+    for class_name in [*FABRID_CLASSES, "TOTAL"]:
+        subset = instances if class_name == "TOTAL" else [row for row in instances if row["clase"] == class_name]
+        areas = [100 * row["area_poligono_rel"] for row in subset]
+        sides = [(row["bbox_ancho_px"] * row["bbox_alto_px"]) ** 0.5 for row in subset]
+        area_p10, area_p50, area_p90 = deciles(areas)
+        side_p10, side_p50, side_p90 = deciles(sides)
+        rows.append({
+            "clase": class_name, "instancias": len(subset),
+            "area_rel_p10_pct": round(area_p10, 4), "area_rel_p50_pct": round(area_p50, 4),
+            "area_rel_p90_pct": round(area_p90, 4),
+            "lado_bbox_p10_px": round(side_p10, 2), "lado_bbox_p50_px": round(side_p50, 2),
+            "lado_bbox_p90_px": round(side_p90, 2),
+            "instancias_area_menor_1pct": sum(area < 1 for area in areas),
+            "pct_area_menor_1pct": round(100 * sum(area < 1 for area in areas) / len(areas), 1),
+        })
+    return rows
+
+
+def fabrid_grouped_manifest(export_root: Path, original_root: Path):
+    """Manifiesto FAB-4/FAB-6 agrupado por captura y con normales concordantes.
+
+    Si una captura aparece en más de un split, conserva el conjunto de evaluación ya
+    existente: test tiene prioridad sobre valid y valid sobre train.
+    """
+    images, _, _ = fabrid_export_records(export_root)
+    normal_sources = {roboflow_source_id(path) for path in (original_root / "defect free").glob("*")}
+    official = defaultdict(set)
+    for row in images:
+        official[row["source_id"]].add(row["split"])
+
+    def proposed(source_id):
+        splits = official[source_id]
+        return "test" if "test" in splits else "valid" if "valid" in splits else "train"
+
+    rows = []
+    for image in images:
+        in_normal_original = image["source_id"] in normal_sources
+        if image["etiqueta_vacia"] and in_normal_original:
+            status, binary, include = "normal_concordante", "normal", True
+        elif not image["etiqueta_vacia"] and not in_normal_original:
+            status, binary, include = "defectuoso_anotado", "defectuoso", True
+        elif image["etiqueta_vacia"]:
+            status, binary, include = "ambiguo_vacio_sin_original_normal", "ambiguo", False
+        else:
+            status, binary, include = "ambiguo_original_normal_con_poligono", "ambiguo", False
+        destination = proposed(image["source_id"])
+        rows.append({
+            "archivo": image["archivo"], "source_id": image["source_id"],
+            "ruta_relativa": f"{image['split']}/images/{image['archivo']}",
+            "split_oficial": image["split"], "split_propuesto": destination,
+            "movido": image["split"] != destination,
+            "instancias": image["instancias"], "clases": "; ".join(image["clases"]),
+            "estado_binario": binary, "estado_conciliacion": status,
+            "usar_comparacion_comun": include,
+        })
+    return rows
+
+
+def fabrid_normal_reconciliation(export_root: Path, original_root: Path):
+    """FAB-5: casos donde carpeta `defect free` y etiqueta vacía no concuerdan."""
+    images, _, _ = fabrid_export_records(export_root)
+    normal_paths = {roboflow_source_id(path): path for path in (original_root / "defect free").glob("*")}
+    empty = {row["source_id"]: row for row in images if row["etiqueta_vacia"]}
+    all_export = {row["source_id"]: row for row in images}
+    all_original = defaultdict(list)
+    for path in image_files(original_root):
+        all_original[roboflow_source_id(path)].append(path)
+    rows = []
+    for source_id in sorted(normal_paths.keys() - empty.keys()):
+        export = all_export.get(source_id)
+        rows.append({
+            "source_id": source_id, "tipo": "original_normal_con_poligono",
+            "split_export": export["split"] if export else "ausente",
+            "archivo_export": export["archivo"] if export else "",
+            "clases_export": "; ".join(export["clases"]) if export else "",
+            "origen_original": "defect free",
+            "tratamiento": "excluir del protocolo común hasta resolver metadatos",
+        })
+    for source_id in sorted(empty.keys() - normal_paths.keys()):
+        export = empty[source_id]
+        origins = sorted({path.parent.name for path in all_original.get(source_id, [])})
+        rows.append({
+            "source_id": source_id, "tipo": "etiqueta_vacia_sin_original_normal",
+            "split_export": export["split"], "archivo_export": export["archivo"],
+            "clases_export": "", "origen_original": "; ".join(origins) if origins else "ausente",
+            "tratamiento": "excluir del protocolo común hasta resolver metadatos",
+        })
+    summary = [
+        {"grupo": "originales defect-free", "cantidad": len(normal_paths)},
+        {"grupo": "etiquetas vacías export", "cantidad": len(empty)},
+        {"grupo": "normales concordantes por source_id", "cantidad": len(normal_paths.keys() & empty.keys())},
+        {"grupo": "original normal con polígono", "cantidad": len(normal_paths.keys() - empty.keys())},
+        {"grupo": "etiqueta vacía sin original normal", "cantidad": len(empty.keys() - normal_paths.keys())},
+    ]
+    return rows, summary
+
+
+def _transformed_mae(left: Path, right: Path, size=128):
+    """Menor diferencia media tras flips, para confirmar derivados de una captura."""
+    with Image.open(left) as image:
+        a = image.convert("L").resize((size, size), Image.Resampling.LANCZOS)
+    with Image.open(right) as image:
+        b = image.convert("L").resize((size, size), Image.Resampling.LANCZOS)
+    variants = [b, b.transpose(Image.Transpose.FLIP_LEFT_RIGHT),
+                b.transpose(Image.Transpose.FLIP_TOP_BOTTOM), b.transpose(Image.Transpose.ROTATE_180)]
+    values = []
+    for variant in variants:
+        histogram = ImageChops.difference(a, variant).histogram()
+        values.append(sum(level * count for level, count in enumerate(histogram)) / (size * size))
+    return min(values)
+
+
+def fabrid_cross_split_sources(export_root: Path):
+    """FAB-4: fuentes presentes en varios splits y evidencia de que son derivados relacionados."""
+    images, _, _ = fabrid_export_records(export_root)
+    groups = defaultdict(list)
+    for row in images:
+        groups[row["source_id"]].append(row)
+    rows = []
+    for source_id, items in sorted(groups.items()):
+        splits = sorted({row["split"] for row in items})
+        if len(splits) < 2:
+            continue
+        cross_mae = []
+        for index, left in enumerate(items):
+            for right in items[index + 1:]:
+                if left["split"] != right["split"]:
+                    cross_mae.append(_transformed_mae(left["path"], right["path"]))
+        hashes = [sha256(row["path"]) for row in items]
+        destination = "test" if "test" in splits else "valid"
+        rows.append({
+            "source_id": source_id, "imagenes": len(items), "splits_oficiales": ";".join(splits),
+            "train": sum(row["split"] == "train" for row in items),
+            "valid": sum(row["split"] == "valid" for row in items),
+            "test": sum(row["split"] == "test" for row in items),
+            "duplicados_sha256": len(hashes) - len(set(hashes)),
+            "mae_min_flip_0a255": round(min(cross_mae), 2),
+            "split_propuesto": destination,
+            "conclusion": "derivados visuales relacionados; agrupar por source_id",
+        })
+    return rows

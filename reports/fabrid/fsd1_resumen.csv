@@ -1,0 +1,12 @@
+unidad,cantidad,detalle
+original_train,643,2180 anotaciones; 139 con segmentación; 36 sin anotaciones
+original_valid,219,568 anotaciones; 44 con segmentación; 0 sin anotaciones
+original_test,152,540 anotaciones; 17 con segmentación; 0 sin anotaciones
+originales_total,1014,"643 train, 219 valid, 152 test"
+anotaciones_originales,3288,Hole-EnBF:0; spot:3288
+categorias_COCO_declaradas,2,Hole-EnBF; spot
+categorias_con_anotaciones,1,spot
+anotaciones_con_segmentacion,200,las restantes contienen bounding box sin polígono útil
+augmentadas_COCO,2300,416x416; representación alternativa del mismo export
+augmentadas_YOLOv8,2300,416x416; representación alternativa del mismo export
+multiconjunto_fuentes_COCO_igual_YOLO,1,1 significa mismos 2.300 ejemplos fuente; no sumarlos como observaciones

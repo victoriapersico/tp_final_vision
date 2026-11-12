@@ -1,0 +1,15 @@
+source_id,imagenes,splits_oficiales,train,valid,test,duplicados_sha256,mae_min_flip_0a255,split_propuesto,conclusion
+IMG_20260714_202412,3,test;train,2,0,1,0,7.55,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202435,3,train;valid,2,1,0,0,5.58,valid,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202503,3,test;train,2,0,1,0,0.39,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202734,3,test;train,2,0,1,0,13.46,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202805,3,train;valid,2,1,0,0,5.71,valid,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202904,3,train;valid,2,1,0,0,13.35,valid,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_202949,3,train;valid,2,1,0,0,23.04,valid,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_203145,3,test;train,2,0,1,0,17.08,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_203320,3,test;train,2,0,1,0,58.39,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_203535,3,train;valid,2,1,0,0,26.13,valid,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_203625,3,test;train,2,0,1,0,19.24,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_203755,3,test;train,2,0,1,0,52.69,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_204532,2,test;train,1,0,1,0,13.58,test,derivados visuales relacionados; agrupar por source_id
+IMG_20260714_204610,3,train;valid,2,1,0,0,10.16,valid,derivados visuales relacionados; agrupar por source_id

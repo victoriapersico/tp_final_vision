@@ -1,0 +1,6 @@
+categoria_original,imagenes,modo,resoluciones,resolucion_principal,cantidad_resolucion_principal
+Needle Mark Defect,467,RGB:467,5,512x512,372
+defect free,620,RGB:620,10,4160x3120,245
+hole Defect,459,RGB:459,4,4160x3120,244
+missing yarn Defect,454,RGB:454,4,4160x3120,257
+stain Defect,407,RGB:407,4,4160x3120,111

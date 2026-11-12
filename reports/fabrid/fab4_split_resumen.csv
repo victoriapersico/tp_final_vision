@@ -1,0 +1,4 @@
+split_propuesto,imagenes_totales,normales_concordantes,defectuosas_anotadas,ambiguas_excluidas,imagenes_movidas_desde_split_oficial,fuentes_unicas
+train,1658,429,1221,8,0,1468
+valid,376,93,282,1,12,364
+test,373,85,278,10,15,358

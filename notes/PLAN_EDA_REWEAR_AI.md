@@ -24,6 +24,22 @@ El bloque **RAW-1 a RAW-6** también fue completado. Se confirmaron 709 original
 
 El protocolo PatchCore primario queda definido a nivel de patch: entrenar sólo con `train/good`, evaluar con `test/good` y `test/defect`, y reportar AUROC de patch, AUROC de píxel y AUPRO. No hay madres compartidas entre train y test, pero todos los patches de test se agrupan en 202 madres y los siete rollos aparecen en ambos conjuntos. Por ello, la incertidumbre debe agruparse por `parent_raw` y los resultados deben desglosarse por rollo. Una evaluación auxiliar a nivel de original requerirá reservar madres normales completas mediante un manifiesto estratificado por rollo **antes** del entrenamiento.
 
+### Actualización Integrante 3 — FabriD y FabricSpotDefect
+
+El bloque **FAB-1 a FAB-6 y FSD-1** fue completado. Los 14 nombres de captura presentes en varios splits corresponden a 41 derivados visualmente relacionados, no a simples coincidencias. El manifiesto `reports/fabrid/fab4_split_agrupado.csv` los agrupa por `source_id` y mueve 27 derivados de train al split de evaluación donde ya estaba su captura.
+
+La conciliación de normales deja 607 casos concordantes, 13 originales `defect free` con polígonos y 6 etiquetas vacías sin original normal. Los 19 ambiguos se excluyen del protocolo común. La comparación segmentador/PatchCore es viable con limitaciones sobre un test compartido de 85 normales y 278 defectuosas, usando mapas binarios y métricas compatibles. Debe declararse el posible atajo de captura: 372/467 `Needle Mark Defect` son 512×512, resolución ausente en normales.
+
+FabricSpotDefect queda como complemento de manchas: COCO declara `Hole-EnBF`, pero sus 3.288 anotaciones pertenecen a `spot` y `Hole-EnBF` tiene cero instancias. Las 36 imágenes train sin cajas no se consideran normales verificadas; los 2.300 aumentados en COCO y YOLO son dos representaciones de los mismos ejemplos fuente.
+
+### Actualización Integrante 4 — Integración y protocolo
+
+El bloque **INT-1 a INT-7** fue completado el 12 de noviembre de 2026. El notebook final se redujo a una lectura guiada de aproximadamente 10 minutos: integra los cuatro aportes con la secuencia pregunta, evidencia y decisión, mientras conserva enlaces a los análisis detallados.
+
+Se fijaron el protocolo, las métricas y la unidad de evaluación en `reports/protocolo_experimental.md`. La comparación directa supervisado/PatchCore se limita al test común de FabriD; la transferencia FabriD `hole/stain` → CISUTAC `agujero/mancha` es viable con limitaciones y sin ajuste, mientras que RAW-FABRID → CISUTAC queda exploratoria. RISE no se descargará ni se usará en esta etapa.
+
+El EDA técnico queda cerrado. El único paso humano pendiente es que los cuatro integrantes lean y aprueben el protocolo antes de comenzar los entrenamientos.
+
 ---
 
 ## 0. Objetivo y alcance del proyecto
@@ -106,12 +122,12 @@ Verificar las rutas reales antes de escribir código; estos nombres describen ar
 
 Antes de empezar con tareas específicas:
 
-- [ ] **C0.1 — Revisión de materiales.** Leer `dataset_audit.md`, notebook previo y scripts utilitarios. Enumerar qué resultados ya existen y cuáles falta producir. **Resultado:** una lista corta de faltantes, no otro inventario duplicado.
-- [ ] **C0.2 — Confirmación de rutas.** Verificar que cada integrante tiene acceso a los datasets locales indicados en el README. Usar rutas configurables y relativas al proyecto; nunca codificar rutas de una computadora.
-- [ ] **C0.3 — Mismas definiciones.** Registrar para cada defecto: ancho y alto de la caja en píxeles (`w`, `h`), área de caja (`w×h`), área relativa (`área caja / (ancho imagen × alto imagen)`); si hay máscara/polígono, registrar su área **por separado**. No mezclar áreas de bounding boxes con áreas de máscaras.
-- [ ] **C0.4 — Reproducibilidad.** Guardar semillas para las visualizaciones aleatorias, listar versiones de datasets y explicar cada filtro. No modificar fotos, anotaciones ni splits oficiales en disco: las alternativas se proponen mediante **manifiestos separados**.
-- [ ] **C0.5 — Visualizaciones útiles.** Cada figura debe contestar una pregunta de investigación. Priorizar pocas figuras claras y representativas, con título, unidades, cantidad de observaciones y conclusiones breves. No generar galerías gigantes.
-- [ ] **C0.6 — Privacidad del test.** El test final, una vez fijado, no se usa para elegir hiperparámetros ni tamaños de tiles. Las decisiones del EDA deben basarse preferentemente en train/valid; si se inspecciona test para auditar estructura o integridad, registrarlo y **no usar sus resultados para optimizar modelos**.
+- [x] **C0.1 — Revisión de materiales.** Leer `dataset_audit.md`, notebook previo y scripts utilitarios. Enumerar qué resultados ya existen y cuáles falta producir. **Resultado:** una lista corta de faltantes, no otro inventario duplicado.
+- [x] **C0.2 — Confirmación de rutas.** Verificar que cada integrante tiene acceso a los datasets locales indicados en el README. Usar rutas configurables y relativas al proyecto; nunca codificar rutas de una computadora.
+- [x] **C0.3 — Mismas definiciones.** Registrar para cada defecto: ancho y alto de la caja en píxeles (`w`, `h`), área de caja (`w×h`), área relativa (`área caja / (ancho imagen × alto imagen)`); si hay máscara/polígono, registrar su área **por separado**. No mezclar áreas de bounding boxes con áreas de máscaras.
+- [x] **C0.4 — Reproducibilidad.** Guardar semillas para las visualizaciones aleatorias, listar versiones de datasets y explicar cada filtro. No modificar fotos, anotaciones ni splits oficiales en disco: las alternativas se proponen mediante **manifiestos separados**.
+- [x] **C0.5 — Visualizaciones útiles.** Cada figura debe contestar una pregunta de investigación. Priorizar pocas figuras claras y representativas, con título, unidades, cantidad de observaciones y conclusiones breves. No generar galerías gigantes.
+- [x] **C0.6 — Privacidad del test.** El test final, una vez fijado, no se usa para elegir hiperparámetros ni tamaños de tiles. Las decisiones del EDA deben basarse preferentemente en train/valid; si se inspecciona test para auditar estructura o integridad, registrarlo y **no usar sus resultados para optimizar modelos**.
 
 **Convención sugerida:** un notebook principal `notebooks/01_eda_datasets_rewear_ai.ipynb` con funciones reutilizables en un archivo existente (`eda_utils.py` o `src/eda_utils.py`, según la estructura real). Archivos de salida compactos bajo `reports/`. No agregar frameworks, bases de datos, dashboards ni clases complejas.
 
@@ -161,19 +177,19 @@ Antes de empezar con tareas específicas:
 
 **Objetivo:** preparar un segundo dominio compatible con métodos supervisados y de anomalías, evitando problemas de particiones.
 
-- [ ] **FAB-1. Confirmar esquema y clases.** Documentar imágenes RGB originales, anotaciones YOLO-seg, clases `stain`, `hole`, `needle mark`, `missing yarn`, normales originales y export redimensionado.
+- [x] **FAB-1. Confirmar esquema y clases.** Documentar imágenes RGB originales, anotaciones YOLO-seg, clases `stain`, `hole`, `needle mark`, `missing yarn`, normales originales y export redimensionado.
   - **Entregable:** resumen de clases y tipos de anotación.
-- [ ] **FAB-2. Visualizar y comparar normal/defecto.** Mostrar ejemplos de cada clase con polígonos y, por separado, ejemplos normales. Comparar visualmente condiciones de captura y resoluciones; documentar si normales y defectuosas provienen de contextos similares o hay indicios de un atajo visual para el modelo.
+- [x] **FAB-2. Visualizar y comparar normal/defecto.** Mostrar ejemplos de cada clase con polígonos y, por separado, ejemplos normales. Comparar visualmente condiciones de captura y resoluciones; documentar si normales y defectuosas provienen de contextos similares o hay indicios de un atajo visual para el modelo.
   - **Entregable:** 2 figuras + evaluación breve del posible sesgo de captura.
-- [ ] **FAB-3. Áreas y tamaños.** Calcular número de instancias, distribuciones de tamaño de polígonos y sus cajas equivalentes, percentiles y diferencias entre clases; identificar casos muy pequeños.
+- [x] **FAB-3. Áreas y tamaños.** Calcular número de instancias, distribuciones de tamaño de polígonos y sus cajas equivalentes, percentiles y diferencias entre clases; identificar casos muy pequeños.
   - **Entregable:** tabla por clase y un gráfico comparativo.
-- [ ] **FAB-4. Investigar 14 capturas repetidas.** Inspeccionar y confirmar si corresponden realmente a la misma foto fuente, a derivados o a coincidencias de nombre. Proponer un **split agrupado por imagen/captura fuente**, preservando la separación train/valid/test; registrar una tabla de afectados y justificación. No modificar datos originales.
+- [x] **FAB-4. Investigar 14 capturas repetidas.** Inspeccionar y confirmar si corresponden realmente a la misma foto fuente, a derivados o a coincidencias de nombre. Proponer un **split agrupado por imagen/captura fuente**, preservando la separación train/valid/test; registrar una tabla de afectados y justificación. No modificar datos originales.
   - **Entregable:** reporte de leakage y propuesta de nuevo manifiesto de particiones.
-- [ ] **FAB-5. Conciliar las normales.** Investigar la diferencia entre **620 imágenes normales originales** y **613 etiquetas vacías en el export**. Distinguir imágenes faltantes, nombres transformados y etiquetas vacías que no correspondan a la misma fuente.
+- [x] **FAB-5. Conciliar las normales.** Investigar la diferencia entre **620 imágenes normales originales** y **613 etiquetas vacías en el export**. Distinguir imágenes faltantes, nombres transformados y etiquetas vacías que no correspondan a la misma fuente.
   - **Entregable:** tabla de correspondencia o explicación documentada de lo que no se pudo verificar.
-- [ ] **FAB-6. Factibilidad de comparación supervisado vs. PatchCore.** Proponer un conjunto de prueba común, separado por fuente, con normales y defectuosas; explicar qué etiquetas sirven para **detección/segmentación** y cuáles para **clasificación de anomalías**. La comparación deberá compartir imágenes y métricas compatibles; no comparar sin más mAP con AUROC.
+- [x] **FAB-6. Factibilidad de comparación supervisado vs. PatchCore.** Proponer un conjunto de prueba común, separado por fuente, con normales y defectuosas; explicar qué etiquetas sirven para **detección/segmentación** y cuáles para **clasificación de anomalías**. La comparación deberá compartir imágenes y métricas compatibles; no comparar sin más mAP con AUROC.
   - **Entregable:** esquema de splits y métricas comparables, pendiente de aprobación grupal.
-- [ ] **FSD-1. Chequeo complementario de FabricSpotDefect (acotado).** Verificar los **1.014 originales**, las clases reales `spot` y `Hole-EnBF`, el número de segmentaciones, la representación duplicada de las 2.300 imágenes aumentadas y el papel de los 36 train sin anotaciones. Mostrar 2–3 ejemplos con cajas. No volver a realizar un EDA exhaustivo.
+- [x] **FSD-1. Chequeo complementario de FabricSpotDefect (acotado).** Verificar los **1.014 originales**, las clases reales `spot` y `Hole-EnBF`, el número de segmentaciones, la representación duplicada de las 2.300 imágenes aumentadas y el papel de los 36 train sin anotaciones. Mostrar 2–3 ejemplos con cajas. No volver a realizar un EDA exhaustivo.
   - **Entregable:** una tabla corta sobre si aporta algo distinto a CISUTAC/FabriD y si conviene incluirlo en los experimentos finales.
 
 **Criterio de terminado:** el equipo sabe si FabriD permite una **comparación controlada válida** y cómo manejar los registros potencialmente filtrados entre splits.
@@ -182,19 +198,19 @@ Antes de empezar con tareas específicas:
 
 **Objetivo:** convertir los tres EDAs en un plan experimental coherente y reproducible; no se limita a «juntar gráficos».
 
-- [ ] **INT-1. Validar entregables y coherencia.** Revisar definiciones de tamaño, clases, nombres, particiones y unidades utilizadas por los otros integrantes. Corregir inconsistencias **en los análisis derivados**, nunca en las anotaciones originales.
+- [x] **INT-1. Validar entregables y coherencia.** Revisar definiciones de tamaño, clases, nombres, particiones y unidades utilizadas por los otros integrantes. Corregir inconsistencias **en los análisis derivados**, nunca en las anotaciones originales.
   - **Entregable:** tabla consolidada de datos y advertencias metodológicas.
-- [ ] **INT-2. Comparar dominios.** Construir una tabla que contraste **fotografías de prendas usadas**, **tejidos RGB en condiciones variables** e **inspección industrial controlada**: resolución, fondo, formato, clases, máscaras/cajas, presencia de normales y pertinencia comercial. Mostrar una sola figura con ejemplos representativos de cada dominio.
+- [x] **INT-2. Comparar dominios.** Construir una tabla que contraste **fotografías de prendas usadas**, **tejidos RGB en condiciones variables** e **inspección industrial controlada**: resolución, fondo, formato, clases, máscaras/cajas, presencia de normales y pertinencia comercial. Mostrar una sola figura con ejemplos representativos de cada dominio.
   - **Entregable:** tabla + figura + interpretación del riesgo de domain shift.
-- [ ] **INT-3. Comprobar factibilidad de transferencia.** Determinar qué clases pueden mapearse legítimamente (`hole`/`stain`) y cuáles no. Proponer cómo evaluar **sin ajuste** un modelo industrial sobre CISUTAC, si la salida y las etiquetas lo hacen posible; si no existe comparación válida, declarar el experimento exploratorio o descartarlo. No usar una cifra entre métricas incompatibles para declarar caída de rendimiento.
+- [x] **INT-3. Comprobar factibilidad de transferencia.** Determinar qué clases pueden mapearse legítimamente (`hole`/`stain`) y cuáles no. Proponer cómo evaluar **sin ajuste** un modelo industrial sobre CISUTAC, si la salida y las etiquetas lo hacen posible; si no existe comparación válida, declarar el experimento exploratorio o descartarlo. No usar una cifra entre métricas incompatibles para declarar caída de rendimiento.
   - **Entregable:** decisión «viable / viable con limitaciones / no viable», por pareja de datasets y tipo de modelo.
-- [ ] **INT-4. Fijar métricas y protocolo preliminar.** Preparar `reports/protocolo_experimental.md` con: tarea por dataset, unidad de evaluación, métricas, definición de defecto pequeño, política de splits, criterios de comparación, semillas y qué se selecciona por validación. Incluir inferencia con/sin tiles, tamaños/solapamientos como **variables posteriores**, no como configuraciones elegidas mirando test.
+- [x] **INT-4. Fijar métricas y protocolo preliminar.** Preparar `reports/protocolo_experimental.md` con: tarea por dataset, unidad de evaluación, métricas, definición de defecto pequeño, política de splits, criterios de comparación, semillas y qué se selecciona por validación. Incluir inferencia con/sin tiles, tamaños/solapamientos como **variables posteriores**, no como configuraciones elegidas mirando test.
   - **Entregable:** protocolo para aprobar entre los cuatro antes de entrenar.
-- [ ] **INT-5. Integrar notebook.** Actualizar el notebook existente con las secciones del EDA que faltan. Mantener código mínimo visible y cálculos reutilizables en funciones. No pegar implementaciones largas dentro de celdas ni duplicar gráficos. Explicar en español **qué muestra cada resultado y qué decisión permite tomar**.
+- [x] **INT-5. Integrar notebook.** Actualizar el notebook existente con las secciones del EDA que faltan. Mantener código mínimo visible y cálculos reutilizables en funciones. No pegar implementaciones largas dentro de celdas ni duplicar gráficos. Explicar en español **qué muestra cada resultado y qué decisión permite tomar**.
   - **Entregable:** un `01_eda_datasets_rewear_ai.ipynb` legible y reproducible, más figuras compactas en `reports/` cuando ayuden al informe.
-- [ ] **INT-6. Cerrar el EDA con decisiones.** Redactar `reports/eda_conclusiones.md`: resultados relevantes, limitaciones, datasets elegidos, criterios de splits, 2 baselines previstos y experimentos propuestos para las semanas siguientes.
+- [x] **INT-6. Cerrar el EDA con decisiones.** Redactar `reports/eda_conclusiones.md`: resultados relevantes, limitaciones, datasets elegidos, criterios de splits, 2 baselines previstos y experimentos propuestos para las semanas siguientes.
   - **Entregable:** resumen de 1–2 páginas que se pueda utilizar para el informe y explicarle al profesor la metodología.
-- [ ] **INT-7. Revisión RISE (solo documentación).** Mantener anotado por qué **no** se usará por ahora: 3 muestras locales, campos `holes`/`stains` incompletos, ausencia de localizaciones. No descargar ni etiquetar más datos salvo decisión explícita del grupo.
+- [x] **INT-7. Revisión RISE (solo documentación).** Mantener anotado por qué **no** se usará por ahora: 3 muestras locales, campos `holes`/`stains` incompletos, ausencia de localizaciones. No descargar ni etiquetar más datos salvo decisión explícita del grupo.
 
 **Criterio de terminado:** cualquier integrante puede explicar **qué se entrenará después, con qué datos y cómo se medirá**, sin contradicciones entre notebook, informe y metodología.
 
@@ -227,7 +243,7 @@ Para cada sección: **pregunta → cálculo/visualización → hallazgo → deci
 | **Baseline supervisado** | **Aprobado en protocolo:** un detector preentrenado basado en CNN (baseline preliminar YOLO11n) | La configuración final y loss se documentan al iniciar entrenamiento; el resultado preliminar a 640 no es una métrica final |
 | **Escala / tiling** | **Aprobado:** foto completa a 640 vs. entrenamiento+inferencia por tiles; inicio 640/20 % | Elegir variantes sólo con valid; medir AP_small, recall por tamaño y costo en el test congelado |
 | **Baseline de anomalías** | **Protocolo EDA aprobado:** PatchCore con `train/good` de RAW-FABRID | Evaluación primaria por patch; incertidumbre agrupada por madre y desglose por rollo. El nivel original requiere un manifiesto auxiliar de madres normales |
-| **Comparación entre enfoques** | Mismo dominio FabriD | Normales comparables, etiquetas compatibles y splits agrupados por fuente |
+| **Comparación entre enfoques** | **Viable con limitaciones en FabriD:** test común y mapas binarios | Usar manifiesto agrupado, 607 normales concordantes y excluir 19 ambiguos; declarar sesgo de lote/resolución |
 | **Transferencia industrial → ropa usada** | Prueba complementaria sin fine-tuning | Compatibilidad real de clases/salidas y existencia de métricas comparables |
 | **FabricSpotDefect** | Complemento, no núcleo | Si añade información útil sin sobrecargar el alcance |
 | **RISE** | No usar por ahora | No requiere más análisis durante esta primera semana |
@@ -283,28 +299,28 @@ El EDA se considera terminado cuando el equipo puede marcar **todo lo aplicable*
 
 ### Datos y visualizaciones
 
-- [ ] Se describieron correctamente las unidades **imagen / defecto / patch / captura fuente**.
-- [ ] Hay ejemplos anotados y zoom de defectos para los datasets principales.
-- [ ] Se reportan tamaños absolutos/relativos y percentiles por clase cuando corresponda.
-- [ ] Hay evidencia visual y numérica de qué ocurre al redimensionar las imágenes.
-- [ ] Se distinguen fotos de ropa usada de imágenes industriales; no se fusionaron datos.
+- [x] Se describieron correctamente las unidades **imagen / defecto / patch / captura fuente**.
+- [x] Hay ejemplos anotados y zoom de defectos para los datasets principales.
+- [x] Se reportan tamaños absolutos/relativos y percentiles por clase cuando corresponda.
+- [x] Hay evidencia visual y numérica de qué ocurre al redimensionar las imágenes.
+- [x] Se distinguen fotos de ropa usada de imágenes industriales; no se fusionaron datos.
 
 ### Calidad y splits
 
-- [ ] Se investigaron los 14 posibles duplicados de FabriD y se definió cómo evitar leakage.
+- [x] Se investigaron los 14 posibles duplicados de FabriD y se definió cómo evitar leakage.
 - [x] Se documentó la diferencia 202 vs. 204 de RAW-FABRID y su tratamiento experimental.
 - [x] Se revisó trazabilidad `parent_raw`/`roll_id` y dependencia entre patches.
 - [x] Se definió una política honesta para CISUTAC, que no tiene test oficial ni normales.
-- [ ] No se trataron etiquetas faltantes/archivos sin cajas como negativos automáticamente.
-- [ ] Los splits futuros se podrán reproducir y no se cambian basándose en resultados del test.
+- [x] No se trataron etiquetas faltantes/archivos sin cajas como negativos automáticamente.
+- [x] Los splits futuros se podrán reproducir y no se cambian basándose en resultados del test.
 
 ### Metodología y documentación
 
-- [ ] Se asignó un dataset y una tarea concreta a cada experimento propuesto.
-- [ ] Están definidas las métricas y su **unidad de evaluación**; se evitarán comparaciones incompatibles.
-- [ ] El protocolo explica qué significa «defecto pequeño» para los análisis posteriores.
-- [ ] El notebook de EDA corre con las rutas documentadas y no modifica datos originales.
-- [ ] `reports/eda_conclusiones.md` y `reports/protocolo_experimental.md` resumen decisiones, límites y pasos siguientes.
+- [x] Se asignó un dataset y una tarea concreta a cada experimento propuesto.
+- [x] Están definidas las métricas y su **unidad de evaluación**; se evitarán comparaciones incompatibles.
+- [x] El protocolo explica qué significa «defecto pequeño» para los análisis posteriores.
+- [x] El notebook de EDA corre con las rutas documentadas y no modifica datos originales.
+- [x] `reports/eda_conclusiones.md` y `reports/protocolo_experimental.md` resumen decisiones, límites y pasos siguientes.
 - [ ] Los cuatro integrantes revisaron y aprobaron el protocolo antes de entrenar.
 
 ---

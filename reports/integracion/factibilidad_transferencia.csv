@@ -1,0 +1,6 @@
+origen,destino,mapeo,decisión,evaluación_posible,límite_principal
+FabriD v3,CISUTAC Holes,hole → agujero,Viable con limitaciones,"Evaluar sin ajuste; convertir máscaras predichas a cajas y medir las métricas de detección de CISUTAC","Cambio fuerte entre primeros planos de tela y prendas completas"
+FabriD v3,CISUTAC Spots,stain → mancha,Viable con limitaciones,"Evaluar sin ajuste; binarizar la salida y convertir regiones a cajas","La categoría stain es aproximada y el aspecto de las manchas cambia"
+FabricSpotDefect,CISUTAC Spots,spot → mancha,Viable con limitaciones,"Detector de cajas sin ajuste sobre el test CISUTAC Spots","Primeros planos sin negativos sanos verificados"
+RAW-FABRID,CISUTAC Holes / Spots,anomalía genérica → defecto,Exploratorio,"Mostrar mapas cualitativos; localización con cajas sólo como análisis secundario","No hay normales CISUTAC para medir falsos positivos y cambia la modalidad de captura"
+FabriD segmentador,FabriD PatchCore,defecto multiclase → mapa binario,Viable con limitaciones,"Mismo test y métricas binarias de imagen/píxel; conservar métricas por clase del segmentador aparte","PatchCore no predice la clase y ambos métodos requieren salidas calibradas"

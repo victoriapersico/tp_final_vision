@@ -1,0 +1,5 @@
+split,imagenes,etiquetas_vacias,imagenes_con_defecto,instancias,ancho_max,alto_max
+train,1685,431,1254,1714,640,640
+valid,364,94,270,395,640,640
+test,358,88,270,393,640,640
+TOTAL,2407,613,1794,2502,640,640

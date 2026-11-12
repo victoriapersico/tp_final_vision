@@ -1,0 +1,428 @@
+{
+  "clases": [
+    "Needle Mark Defect",
+    "hole Defect",
+    "missing yarn Defect",
+    "stain Defect"
+  ],
+  "inventario_original": [
+    {
+      "categoria_original": "Needle Mark Defect",
+      "imagenes": 467,
+      "modo": "RGB:467",
+      "resoluciones": 5,
+      "resolucion_principal": "512x512",
+      "cantidad_resolucion_principal": 372
+    },
+    {
+      "categoria_original": "defect free",
+      "imagenes": 620,
+      "modo": "RGB:620",
+      "resoluciones": 10,
+      "resolucion_principal": "4160x3120",
+      "cantidad_resolucion_principal": 245
+    },
+    {
+      "categoria_original": "hole Defect",
+      "imagenes": 459,
+      "modo": "RGB:459",
+      "resoluciones": 4,
+      "resolucion_principal": "4160x3120",
+      "cantidad_resolucion_principal": 244
+    },
+    {
+      "categoria_original": "missing yarn Defect",
+      "imagenes": 454,
+      "modo": "RGB:454",
+      "resoluciones": 4,
+      "resolucion_principal": "4160x3120",
+      "cantidad_resolucion_principal": 257
+    },
+    {
+      "categoria_original": "stain Defect",
+      "imagenes": 407,
+      "modo": "RGB:407",
+      "resoluciones": 4,
+      "resolucion_principal": "4160x3120",
+      "cantidad_resolucion_principal": 111
+    }
+  ],
+  "export_splits": [
+    {
+      "split": "train",
+      "imagenes": 1685,
+      "etiquetas_vacias": 431,
+      "imagenes_con_defecto": 1254,
+      "instancias": 1714,
+      "ancho_max": 640,
+      "alto_max": 640
+    },
+    {
+      "split": "valid",
+      "imagenes": 364,
+      "etiquetas_vacias": 94,
+      "imagenes_con_defecto": 270,
+      "instancias": 395,
+      "ancho_max": 640,
+      "alto_max": 640
+    },
+    {
+      "split": "test",
+      "imagenes": 358,
+      "etiquetas_vacias": 88,
+      "imagenes_con_defecto": 270,
+      "instancias": 393,
+      "ancho_max": 640,
+      "alto_max": 640
+    },
+    {
+      "split": "TOTAL",
+      "imagenes": 2407,
+      "etiquetas_vacias": 613,
+      "imagenes_con_defecto": 1794,
+      "instancias": 2502,
+      "ancho_max": 640,
+      "alto_max": 640
+    }
+  ],
+  "tamanos": [
+    {
+      "clase": "Needle Mark Defect",
+      "instancias": 636,
+      "area_rel_p10_pct": 0.1231,
+      "area_rel_p50_pct": 2.5487,
+      "area_rel_p90_pct": 8.0357,
+      "lado_bbox_p10_px": 31.7,
+      "lado_bbox_p50_px": 170.64,
+      "lado_bbox_p90_px": 316.2,
+      "instancias_area_menor_1pct": 161,
+      "pct_area_menor_1pct": 25.3
+    },
+    {
+      "clase": "hole Defect",
+      "instancias": 568,
+      "area_rel_p10_pct": 0.0559,
+      "area_rel_p50_pct": 0.2171,
+      "area_rel_p90_pct": 1.1911,
+      "lado_bbox_p10_px": 15.7,
+      "lado_bbox_p50_px": 31.56,
+      "lado_bbox_p90_px": 75.63,
+      "instancias_area_menor_1pct": 497,
+      "pct_area_menor_1pct": 87.5
+    },
+    {
+      "clase": "missing yarn Defect",
+      "instancias": 580,
+      "area_rel_p10_pct": 0.3138,
+      "area_rel_p50_pct": 1.181,
+      "area_rel_p90_pct": 3.4245,
+      "lado_bbox_p10_px": 52.27,
+      "lado_bbox_p50_px": 123.18,
+      "lado_bbox_p90_px": 282.19,
+      "instancias_area_menor_1pct": 253,
+      "pct_area_menor_1pct": 43.6
+    },
+    {
+      "clase": "stain Defect",
+      "instancias": 718,
+      "area_rel_p10_pct": 0.1077,
+      "area_rel_p50_pct": 0.7247,
+      "area_rel_p90_pct": 4.0742,
+      "lado_bbox_p10_px": 22.47,
+      "lado_bbox_p50_px": 60.02,
+      "lado_bbox_p90_px": 156.49,
+      "instancias_area_menor_1pct": 420,
+      "pct_area_menor_1pct": 58.5
+    },
+    {
+      "clase": "TOTAL",
+      "instancias": 2502,
+      "area_rel_p10_pct": 0.0948,
+      "area_rel_p50_pct": 0.9046,
+      "area_rel_p90_pct": 4.7679,
+      "lado_bbox_p10_px": 21.55,
+      "lado_bbox_p50_px": 83.75,
+      "lado_bbox_p90_px": 241.19,
+      "instancias_area_menor_1pct": 1331,
+      "pct_area_menor_1pct": 53.2
+    }
+  ],
+  "fuentes_cross_split": [
+    {
+      "source_id": "IMG_20260714_202412",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 7.55,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202435",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 5.58,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202503",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 0.39,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202734",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 13.46,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202805",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 5.71,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202904",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 13.35,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_202949",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 23.04,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_203145",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 17.08,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_203320",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 58.39,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_203535",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 26.13,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_203625",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 19.24,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_203755",
+      "imagenes": 3,
+      "splits_oficiales": "test;train",
+      "train": 2,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 52.69,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_204532",
+      "imagenes": 2,
+      "splits_oficiales": "test;train",
+      "train": 1,
+      "valid": 0,
+      "test": 1,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 13.58,
+      "split_propuesto": "test",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    },
+    {
+      "source_id": "IMG_20260714_204610",
+      "imagenes": 3,
+      "splits_oficiales": "train;valid",
+      "train": 2,
+      "valid": 1,
+      "test": 0,
+      "duplicados_sha256": 0,
+      "mae_min_flip_0a255": 10.16,
+      "split_propuesto": "valid",
+      "conclusion": "derivados visuales relacionados; agrupar por source_id"
+    }
+  ],
+  "normales": [
+    {
+      "grupo": "originales defect-free",
+      "cantidad": 620
+    },
+    {
+      "grupo": "etiquetas vacías export",
+      "cantidad": 613
+    },
+    {
+      "grupo": "normales concordantes por source_id",
+      "cantidad": 607
+    },
+    {
+      "grupo": "original normal con polígono",
+      "cantidad": 13
+    },
+    {
+      "grupo": "etiqueta vacía sin original normal",
+      "cantidad": 6
+    }
+  ],
+  "protocolo": [
+    {
+      "split_propuesto": "train",
+      "imagenes_totales": 1658,
+      "normales_concordantes": 429,
+      "defectuosas_anotadas": 1221,
+      "ambiguas_excluidas": 8,
+      "imagenes_movidas_desde_split_oficial": 0,
+      "fuentes_unicas": 1468
+    },
+    {
+      "split_propuesto": "valid",
+      "imagenes_totales": 376,
+      "normales_concordantes": 93,
+      "defectuosas_anotadas": 282,
+      "ambiguas_excluidas": 1,
+      "imagenes_movidas_desde_split_oficial": 12,
+      "fuentes_unicas": 364
+    },
+    {
+      "split_propuesto": "test",
+      "imagenes_totales": 373,
+      "normales_concordantes": 85,
+      "defectuosas_anotadas": 278,
+      "ambiguas_excluidas": 10,
+      "imagenes_movidas_desde_split_oficial": 15,
+      "fuentes_unicas": 358
+    }
+  ],
+  "fabric_spot_defect": [
+    {
+      "unidad": "original_train",
+      "cantidad": 643,
+      "detalle": "2180 anotaciones; 139 con segmentación; 36 sin anotaciones"
+    },
+    {
+      "unidad": "original_valid",
+      "cantidad": 219,
+      "detalle": "568 anotaciones; 44 con segmentación; 0 sin anotaciones"
+    },
+    {
+      "unidad": "original_test",
+      "cantidad": 152,
+      "detalle": "540 anotaciones; 17 con segmentación; 0 sin anotaciones"
+    },
+    {
+      "unidad": "originales_total",
+      "cantidad": 1014,
+      "detalle": "643 train, 219 valid, 152 test"
+    },
+    {
+      "unidad": "anotaciones_originales",
+      "cantidad": 3288,
+      "detalle": "Hole-EnBF:0; spot:3288"
+    },
+    {
+      "unidad": "categorias_COCO_declaradas",
+      "cantidad": 2,
+      "detalle": "Hole-EnBF; spot"
+    },
+    {
+      "unidad": "categorias_con_anotaciones",
+      "cantidad": 1,
+      "detalle": "spot"
+    },
+    {
+      "unidad": "anotaciones_con_segmentacion",
+      "cantidad": 200,
+      "detalle": "las restantes contienen bounding box sin polígono útil"
+    },
+    {
+      "unidad": "augmentadas_COCO",
+      "cantidad": 2300,
+      "detalle": "416x416; representación alternativa del mismo export"
+    },
+    {
+      "unidad": "augmentadas_YOLOv8",
+      "cantidad": 2300,
+      "detalle": "416x416; representación alternativa del mismo export"
+    },
+    {
+      "unidad": "multiconjunto_fuentes_COCO_igual_YOLO",
+      "cantidad": 1,
+      "detalle": "1 significa mismos 2.300 ejemplos fuente; no sumarlos como observaciones"
+    }
+  ]
+}
