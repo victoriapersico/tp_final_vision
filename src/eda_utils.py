@@ -10,6 +10,7 @@ import csv
 import hashlib
 import json
 import re
+import shutil
 from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import median, quantiles
@@ -500,6 +501,14 @@ def cisutac_label_checks(records):
         {"control": "capturas con alguna caja de lado < 4 px", "valor": len({i["captura"] for i in thin}),
          "detalle": ""},
     ]
+
+
+def link_or_copy(source, target):
+    """Enlace simbólico a un original para armar datos derivados sin duplicarlo (copia si no se admite)."""
+    try:
+        target.symlink_to(source)
+    except OSError:  # p. ej. Windows sin permisos para enlaces simbólicos
+        shutil.copy2(source, target)
 
 
 def cisutac_coco_ground_truth(records, captures, class_name):

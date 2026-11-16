@@ -219,8 +219,13 @@ def training_curves(run_dir):
 # Inferencia y evaluación
 # --------------------------------------------------------------------------------------------------
 
-def make_predictor(weights, mode, imgsz=640, tile=640, overlap=0.2, also_full=False, conf=0.001):
-    """Función path -> [(caja xywh en px de la original, score)] para la foto completa o para tiles."""
+def make_predictor(weights, mode, imgsz=640, tile=640, overlap=0.2, also_full=False, conf=0.001, classes=None,
+                   tile_imgsz=None):
+    """Función path -> [(caja xywh en px de la original, score)] para la foto completa o para tiles.
+
+    `classes`: ids de clase del modelo que se conservan (None = todas); se filtran antes de la NMS.
+    `tile_imgsz`: lado con el que cada tile entra al modelo (None = el del tile; si es mayor, el tile se amplía).
+    """
     device = pick_device()
     if mode == "completa":
         from ultralytics import YOLO
@@ -228,7 +233,8 @@ def make_predictor(weights, mode, imgsz=640, tile=640, overlap=0.2, also_full=Fa
         model = YOLO(str(weights))
 
         def predict(path):
-            result = model.predict(str(path), imgsz=imgsz, conf=conf, device=device, max_det=300, verbose=False)[0]
+            result = model.predict(str(path), imgsz=imgsz, conf=conf, device=device, max_det=300, classes=classes,
+                                   verbose=False)[0]
             return [([x1, y1, x2 - x1, y2 - y1], float(s))
                     for (x1, y1, x2, y2), s in zip(result.boxes.xyxy.tolist(), result.boxes.conf.tolist())]
         return predict
@@ -238,7 +244,9 @@ def make_predictor(weights, mode, imgsz=640, tile=640, overlap=0.2, also_full=Fa
 
     sahi_device = f"cuda:{device}" if isinstance(device, int) else device
     model = AutoDetectionModel.from_pretrained(model_type="ultralytics", model_path=str(weights),
-                                               confidence_threshold=conf, device=sahi_device, image_size=tile)
+                                               confidence_threshold=conf, device=sahi_device,
+                                               image_size=tile_imgsz or tile)
+    excluded = None if classes is None else [k for k in model.model.names if k not in classes]
 
     def predict(path):
         # Mismo criterio de fusión que scripts/evaluate_cisutac.py: NMS agnóstico a IoU 0,5.
@@ -246,31 +254,35 @@ def make_predictor(weights, mode, imgsz=640, tile=640, overlap=0.2, also_full=Fa
                                        overlap_height_ratio=overlap, overlap_width_ratio=overlap,
                                        perform_standard_pred=also_full, postprocess_type="NMS",
                                        postprocess_match_metric="IOU", postprocess_match_threshold=0.5,
-                                       postprocess_class_agnostic=True, verbose=0)
+                                       postprocess_class_agnostic=True, exclude_classes_by_id=excluded, verbose=0)
         return [([float(v) for v in p.bbox.to_xywh()], float(p.score.value)) for p in result.object_prediction_list]
     return predict
 
 
 def evaluate(name, dataset, weights, split="valid", mode="completa", imgsz=640, tile=640, overlap=0.2,
-             also_full=False, conf=0.001, threshold=None, limit=None, reevaluate=False, confirm_test=False):
+             also_full=False, conf=0.001, threshold=None, limit=None, reevaluate=False, confirm_test=False,
+             classes=None, tile_imgsz=None, gt=None, image_dir=None):
     """Infiere sobre un split y calcula todas las métricas en coordenadas de la original.
 
     Guarda predicciones.json y metricas.json en results/cisutac/bloque_a/evaluaciones/<name>/ y, si ya
     existen y `reevaluate` es False, los lee. En valid el umbral de confianza es el de máximo F1; en test
     tiene que venir de valid (`threshold`) y hay que pasar `confirm_test=True`.
+
+    `classes` y `tile_imgsz` se pasan a `make_predictor`. Para evaluar otro dataset (p. ej. FabriD en el E4),
+    `gt` (COCO, una sola categoría) e `image_dir` reemplazan las cajas y la carpeta de CISUTAC.
     """
     out = RESULTS / "evaluaciones" / name
     if (out / "metricas.json").exists() and not reevaluate:
         return json.loads((out / "metricas.json").read_text())
     if split == "test" and (not confirm_test or threshold is None):
         raise ValueError("El test se usa una sola vez: pasar confirm_test=True y el umbral elegido en valid.")
-    gt = load_ground_truth(dataset, split)
+    gt = load_ground_truth(dataset, split) if gt is None else dict(gt)
     if limit:
         gt["images"] = gt["images"][:limit]
         kept = {im["id"] for im in gt["images"]}
         gt["annotations"] = [a for a in gt["annotations"] if a["image_id"] in kept]
-    predict = make_predictor(weights, mode, imgsz, tile, overlap, also_full, conf)
-    folder = original_dir(dataset)
+    predict = make_predictor(weights, mode, imgsz, tile, overlap, also_full, conf, classes, tile_imgsz)
+    folder = original_dir(dataset) if image_dir is None else Path(image_dir)
     predict(folder / gt["images"][0]["file_name"])  # calentamiento: no se cuenta en el tiempo
     memory = _reset_peak_memory()
     predictions, seconds = [], []
@@ -288,6 +300,7 @@ def evaluate(name, dataset, weights, split="valid", mode="completa", imgsz=640, 
     metrics = {
         "corrida": name, "dataset": dataset, "split": split, "modo": mode, "imgsz": imgsz, "tile": tile,
         "solapamiento": overlap, "tambien_completa": also_full, "pesos": str(weights),
+        "clases": classes, "tile_imgsz": tile_imgsz,
         "imagenes": len(gt["images"]), "cajas_reales": len(gt["annotations"]), "predicciones": len(predictions),
         **coco_ap(gt, predictions), "umbral_confianza": threshold, **summarize(matched),
         "ic95_recall": bootstrap_interval(matched, "recall"), "ic95_f1": bootstrap_interval(matched, "f1"),
