@@ -6,7 +6,7 @@ El proyecto compara detección supervisada con detección de anomalías mediante
 
 ## Estado actual
 
-La descarga y el EDA inicial están terminados. Se auditaron resoluciones, anotaciones, tamaños de defectos, normales disponibles y riesgos de fuga entre particiones. Todavía **no se entrenaron modelos**.
+La descarga y el EDA inicial están terminados. Se auditaron resoluciones, anotaciones, tamaños de defectos, normales disponibles y riesgos de fuga entre particiones. Ya están implementados los notebooks de los baselines supervisados en CISUTAC y de anomalías en RAW-FABRID; sus corridas definitivas y conclusiones siguen pendientes.
 
 Antes de trabajar, todos los integrantes y agentes deben leer [`notes/AGENTS.md`](notes/AGENTS.md), que reúne el alcance y las decisiones compartidas.
 
