@@ -49,6 +49,27 @@ def load_fabrid_ground_truth(split, key, variant="hole_stain_cajas"):
     return load_ground_truth(fabrid_derived_dir(variant), split, key)
 
 
+def balanced_ground_truth_subset(gt, n=3):
+    """Subconjunto chico con positivos y una normal para verificar las métricas en modo prueba."""
+    if n is None or n >= len(gt["images"]):
+        return dict(gt)
+    if n < 1:
+        raise ValueError("n debe ser al menos 1")
+
+    annotated = {annotation["image_id"] for annotation in gt["annotations"]}
+    positives = [image for image in gt["images"] if image["id"] in annotated]
+    normals = [image for image in gt["images"] if image["id"] not in annotated]
+    selected = positives[:n - 1] + normals[:1] if positives and normals and n > 1 else (positives or normals)[:n]
+    selected_ids = {image["id"] for image in selected}
+    selected += [image for image in gt["images"] if image["id"] not in selected_ids][:n - len(selected)]
+    selected_ids = {image["id"] for image in selected}
+    return {
+        **gt,
+        "images": selected,
+        "annotations": [annotation for annotation in gt["annotations"] if annotation["image_id"] in selected_ids],
+    }
+
+
 def class_id(weights, key):
     """Id de la clase del modelo cuyo nombre empieza con `key` (p. ej. "hole" → "hole Defect")."""
     from ultralytics import YOLO
