@@ -1,3 +1,29 @@
+# Dependencias de ReWear AI. Instalar con: python -m pip install -r requirements.txt
+# Probado con Python 3.13 (Windows, CPU) y en Kaggle (GPU).
+#
+# torch/torchvision: pip instala la versión para CPU. Para usar una GPU NVIDIA local, instalar antes
+# la versión con CUDA siguiendo https://pytorch.org/get-started/locally/ y después este archivo.
+
+# Notebooks
 jupyterlab>=4.0,<5
+ipykernel>=6
+papermill>=2.6            # ejecutar notebooks de punta a punta (lanzador de Kaggle)
+
+# Datos y gráficos
+numpy>=1.26
+pandas>=2.0
 matplotlib>=3.7,<4
 Pillow>=10,<12
+opencv-python>=4.8
+scipy>=1.11
+scikit-learn>=1.3
+
+# Deep learning
+torch>=2.2
+torchvision>=0.17
+ultralytics>=8.3          # YOLO11 (bloque A)
+sahi>=0.11                # inferencia con tiles (bloque A)
+pycocotools>=2.0.7        # mAP estilo COCO (src/detection_eval.py)
+
+# Descarga de CISUTAC desde Hugging Face (scripts/download_datasets.py)
+huggingface_hub[cli]>=0.30
