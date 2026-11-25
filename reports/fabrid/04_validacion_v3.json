@@ -1,0 +1,69 @@
+{
+  "etapa": "validación completa",
+  "kaggle_version": 3,
+  "kaggle_script_version_id": 372676240,
+  "url": "https://www.kaggle.com/code/victoriaprsico/04-comparacion-fabrid?scriptVersionId=372676240",
+  "output_zip": "results/fabrid/results_fabrid04_valid_v3.zip",
+  "output_zip_sha256": "8ad559ecbd48cbdf9378346a208382a82d8702a1a6a55e014362c5b268d44b5d",
+  "configuracion": {
+    "modo_prueba": false,
+    "evaluar_test": false,
+    "semilla": 0,
+    "commit": "3bda925932d0d42cedb49857993e8f1ba28df75d",
+    "paquetes": {
+      "ultralytics": "8.4.215",
+      "sahi": "0.14.0",
+      "torch": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "numpy": "2.1.3",
+      "scipy": "1.16.3",
+      "scikit-learn": "1.6.1",
+      "Pillow": "13.0.0"
+    },
+    "manifiesto_sha256": "8707c30883c4d9ff0c42f531cabb4fd949a06b108a9197b7b49ea89275010645",
+    "export": "/kaggle/input/datasets/victoriaprsico/fabrid-v3-export-anotado/annotations_export",
+    "pc": {
+      "backbone": "resnet18",
+      "size": 256,
+      "coreset": 0.01
+    },
+    "supervisado": {
+      "imgsz": 640,
+      "batch": 8,
+      "epochs": 100,
+      "patience": 30
+    }
+  },
+  "metricas_valid": {
+    "YOLO11n-seg": {
+      "AUROC_imagen": 0.939068100358423,
+      "AUROC_pixel": 0.8629160714017805,
+      "AUPRO@0.3": 0.7734625337405193,
+      "Dice_micro": 0.5225129033099156,
+      "IoU_micro": 0.3536497235613538,
+      "umbral_valid": 0.16507037775591019,
+      "imagenes": 375,
+      "fuentes": 363,
+      "bins": 2048,
+      "split": "valid",
+      "segundos_por_imagen": 0.02986268956000034,
+      "modo_prueba": false
+    },
+    "PatchCore": {
+      "AUROC_imagen": 0.6069549302219172,
+      "AUROC_pixel": 0.7426022298972901,
+      "AUPRO@0.3": 0.4127605681047962,
+      "Dice_micro": 0.10420148520973097,
+      "IoU_micro": 0.05496443023707016,
+      "umbral_valid": 2.6693658772855997,
+      "imagenes": 375,
+      "fuentes": 363,
+      "bins": 2048,
+      "split": "valid",
+      "segundos_por_imagen": 0.062072093544001596,
+      "modo_prueba": false
+    }
+  },
+  "seleccion_fijada": "YOLO11n-seg supera a PatchCore en AUPRO@0.3 en valid; ambas configuraciones y umbrales se conservan para comparación test",
+  "test_evaluado": false
+}
