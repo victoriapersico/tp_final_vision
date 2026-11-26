@@ -1,0 +1,47 @@
+{
+  "corrida": "spots_A1_completa1280__valid_completa1280",
+  "dataset": "spots",
+  "split": "valid",
+  "modo": "completa",
+  "imgsz": 1280,
+  "tile": 640,
+  "solapamiento": 0.2,
+  "tambien_completa": false,
+  "pesos": "/kaggle/working/tp_final_vision/results/cisutac/bloque_a/entrenamientos/spots_A1_completa1280/weights/best.pt",
+  "imagenes": 59,
+  "cajas_reales": 284,
+  "predicciones": 8537,
+  "mAP@0.5:0.95": 0.012863211711190188,
+  "mAP@0.5": 0.03085956194071992,
+  "mAP@0.75": 0.015889299773350823,
+  "AP_small": 0.002240698533684702,
+  "AP_medium": 0.04670527148098439,
+  "AP_large": 0.023613980820695744,
+  "umbral_confianza": 0.03,
+  "precision": 0.09363295880149813,
+  "recall": 0.0880281690140845,
+  "f1": 0.09074410163339383,
+  "recall < 8 px": 0.0,
+  "recall 8–16 px": 0.06060606060606061,
+  "recall 16–32 px": 0.18032786885245902,
+  "recall 32–64 px": 0.14705882352941177,
+  "recall ≥ 64 px": 0.09803921568627451,
+  "ic95_recall": [
+    0.0539568345323741,
+    0.12790697674418605
+  ],
+  "ic95_f1": [
+    0.05687203791469194,
+    0.12704174228675136
+  ],
+  "segundos_por_imagen": 0.04557069433898721,
+  "tiles_por_imagen": 1.0,
+  "memoria_max_gb": 0.19,
+  "encontrados_por_tamano": {
+    "< 8 px": "0/72",
+    "8–16 px": "4/66",
+    "16–32 px": "11/61",
+    "32–64 px": "5/34",
+    "≥ 64 px": "5/51"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "corrida": "holes_A3_tiles640_neg0__valid_tiles640_o20",
+  "dataset": "holes",
+  "split": "valid",
+  "modo": "tiles",
+  "imgsz": 640,
+  "tile": 640,
+  "solapamiento": 0.2,
+  "tambien_completa": false,
+  "pesos": "/kaggle/working/tp_final_vision/results/cisutac/bloque_a/entrenamientos/holes_A3_tiles640_neg0/weights/best.pt",
+  "imagenes": 43,
+  "cajas_reales": 71,
+  "predicciones": 60991,
+  "mAP@0.5:0.95": 0.0404216191886128,
+  "mAP@0.5": 0.12107739189269272,
+  "mAP@0.75": 0.020456728577807205,
+  "AP_small": 0.06859490179219059,
+  "AP_medium": 0.03817793017481771,
+  "AP_large": 0.015195694741218561,
+  "umbral_confianza": 0.33,
+  "precision": 0.26666666666666666,
+  "recall": 0.22535211267605634,
+  "f1": 0.24427480916030536,
+  "recall < 8 px": 0.0,
+  "recall 8–16 px": 0.13333333333333333,
+  "recall 16–32 px": 0.375,
+  "recall 32–64 px": 0.15789473684210525,
+  "recall ≥ 64 px": 0.29411764705882354,
+  "ic95_recall": [
+    0.1267605633802817,
+    0.3559322033898305
+  ],
+  "ic95_f1": [
+    0.14285714285714285,
+    0.3529411764705882
+  ],
+  "segundos_por_imagen": 0.4845654907673824,
+  "tiles_por_imagen": 32.0,
+  "memoria_max_gb": 0.17,
+  "encontrados_por_tamano": {
+    "< 8 px": "0/4",
+    "8–16 px": "2/15",
+    "16–32 px": "6/16",
+    "32–64 px": "3/19",
+    "≥ 64 px": "5/17"
+  }
+}
