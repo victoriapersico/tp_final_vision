@@ -105,11 +105,14 @@ def classify_tiles(gt, tile, overlap, min_visible=0.5):
 
 
 def build_tile_dataset(dataset, tile=640, overlap=0.2, neg_per_pos=1.0, seed=0, min_visible=0.5,
-                       max_images=None):
+                       max_images=None, hard_scores=None, hard_fraction=0.0):
     """Arma (o reutiliza) un dataset de tiles para Ultralytics y devuelve (data.yaml, estadísticas).
 
     - Train y valid salen de los mismos splits que la foto completa (valid sólo se usa para elegir la época).
     - `neg_per_pos`: tiles sin defectos por cada tile con defectos (None = todos). Se muestrean con `seed`.
+    - `hard_scores` y `hard_fraction` (negativos difíciles, sólo en train): de los tiles sin defecto que se
+      usan, la fracción `hard_fraction` son los de mayor puntaje en `hard_scores` (ver `score_negative_tiles`)
+      y el resto se sortea entre los demás. La cantidad total de negativos no cambia. Valid queda igual.
     - Los recortes se guardan una sola vez en data/derived/cisutac_<dataset>_tiles/t<tile>_o<overlap>/ y
       cada configuración sólo escribe una lista de archivos, así distintas proporciones comparten recortes.
     """
@@ -117,6 +120,8 @@ def build_tile_dataset(dataset, tile=640, overlap=0.2, neg_per_pos=1.0, seed=0, 
 
     root = DATA / "derived" / f"cisutac_{dataset}_tiles" / f"t{tile}_o{round(overlap * 100)}"
     tag = f"neg{'todos' if neg_per_pos is None else f'{neg_per_pos:g}'}_s{seed}"
+    if hard_scores is not None and hard_fraction > 0:
+        tag += f"_dificiles{hard_fraction:g}"
     stats = {}
     lists = {}
     for split in ("train", "valid"):
@@ -128,7 +133,14 @@ def build_tile_dataset(dataset, tile=640, overlap=0.2, neg_per_pos=1.0, seed=0, 
         if neg_per_pos is None:
             chosen_neg = negatives
         else:
-            chosen_neg = rng.sample(negatives, min(len(negatives), round(neg_per_pos * len(positives))))
+            n_neg = min(len(negatives), round(neg_per_pos * len(positives)))
+            if split == "train" and hard_scores is not None and hard_fraction > 0:
+                key = lambda e: (e["image"]["file_name"], e["x0"], e["y0"])  # noqa: E731
+                ranked = sorted(negatives, key=lambda e: hard_scores.get(key(e), 0.0), reverse=True)
+                n_hard = round(hard_fraction * n_neg)
+                chosen_neg = ranked[:n_hard] + rng.sample(ranked[n_hard:], n_neg - n_hard)
+            else:
+                chosen_neg = rng.sample(negatives, n_neg)
         selected = positives + chosen_neg
         (root / "images" / split).mkdir(parents=True, exist_ok=True)
         (root / "labels" / split).mkdir(parents=True, exist_ok=True)
@@ -164,6 +176,38 @@ def build_tile_dataset(dataset, tile=640, overlap=0.2, neg_per_pos=1.0, seed=0, 
                     f"path: {json.dumps(str(root))}\ntrain: {json.dumps(str(lists['train']))}\n"
                     f"val: {json.dumps(str(lists['valid']))}\nnames:\n  0: defecto\n")
     return yaml, stats
+
+
+def score_negative_tiles(dataset, weights, tile=640, overlap=0.2, min_visible=0.5, max_images=None, conf=0.01,
+                         batch=32):
+    """Puntaje de cada tile sin defecto de train: la confianza máxima que le da el detector `weights`.
+
+    Sirve para elegir negativos difíciles: los tiles sanos donde el modelo más se equivoca (ojalillos,
+    lunares, costuras). Corre el modelo directamente sobre cada tile, a la escala de entrenamiento.
+    Devuelve {(file_name, x0, y0): puntaje}; un tile sin predicciones sobre `conf` vale 0.
+    """
+    from PIL import Image
+    from ultralytics import YOLO
+
+    gt = load_ground_truth(dataset, "train")
+    if max_images:
+        gt = {**gt, "images": gt["images"][:max_images]}
+    _, negatives, _ = classify_tiles(gt, tile, overlap, min_visible)
+    by_file = {}
+    for entry in negatives:
+        by_file.setdefault(entry["image"]["file_name"], []).append((entry["x0"], entry["y0"]))
+    model, device = YOLO(str(weights)), pick_device()
+    scores = {}
+    for file_name, corners in by_file.items():
+        with Image.open(original_dir(dataset) / file_name) as im:
+            im = im.convert("RGB")
+            crops = [im.crop((x0, y0, x0 + tile, y0 + tile)) for x0, y0 in corners]
+        for start in range(0, len(crops), batch):
+            results = model.predict(crops[start:start + batch], imgsz=tile, conf=conf, device=device, verbose=False)
+            for (x0, y0), result in zip(corners[start:start + batch], results):
+                confs = result.boxes.conf.tolist()
+                scores[(file_name, x0, y0)] = max(confs) if confs else 0.0
+    return scores
 
 
 def equivalent_epochs(epochs_full, n_full_images, n_training_images, minimum=10):
