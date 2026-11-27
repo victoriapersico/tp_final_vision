@@ -20,18 +20,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from eda_utils import cisutac_coco_ground_truth, cisutac_records, yolo_class_names
+from eda_utils import cisutac_coco_ground_truth, cisutac_records, link_or_copy, yolo_class_names
 
 DATA = Path(os.environ.get("REWEAR_DATA_DIR", ROOT / "data")).expanduser().resolve()
 DEFAULT_MANIFEST = ROOT / "reports" / "cisutac" / "cis5_split_propuesto.csv"
-
-
-def link_or_copy(source, target):
-    try:
-        target.symlink_to(source)
-    except OSError:  # p. ej. Windows sin permisos para enlaces simbólicos
-        shutil.copy2(source, target)
-
 
 parser = argparse.ArgumentParser(description="Prepara imágenes, labels, data.yaml y COCO de CISUTAC por split.")
 parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST,
