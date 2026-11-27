@@ -1,0 +1,73 @@
+dataset,corrida,rango,defectos,detectados,caja_mala,no_detectados,recall_iou0.1,recall_iou0.3,recall_iou0.5,ic95_iou0.1,ic95_iou0.3,ic95_iou0.5
+holes,holes_A0_completa640__valid_completa640,< 16 px,19,0,0,19,0.0,0.0,0.0,,,
+holes,holes_A0_completa640__valid_completa640,16–32 px,16,0,2,14,0.125,0.0625,0.0,,,
+holes,holes_A0_completa640__valid_completa640,≥ 32 px,36,6,4,26,0.2778,0.2222,0.1667,,,
+holes,holes_A0_completa640__valid_completa640,total,71,6,6,59,0.169,0.1268,0.0845,0.098–0.261,0.062–0.211,0.029–0.167
+holes,holes_A0_completa640__valid_tiles640_o20,< 16 px,19,0,0,19,0.0,0.0,0.0,,,
+holes,holes_A0_completa640__valid_tiles640_o20,16–32 px,16,2,0,14,0.125,0.125,0.125,,,
+holes,holes_A0_completa640__valid_tiles640_o20,≥ 32 px,36,0,0,36,0.0,0.0,0.0,,,
+holes,holes_A0_completa640__valid_tiles640_o20,total,71,2,0,69,0.0282,0.0282,0.0282,0.000–0.079,0.000–0.079,0.000–0.079
+holes,holes_A0_completa640__valid_tiles640_o20+completa,< 16 px,19,0,0,19,0.0,0.0,0.0,,,
+holes,holes_A0_completa640__valid_tiles640_o20+completa,16–32 px,16,2,0,14,0.125,0.125,0.125,,,
+holes,holes_A0_completa640__valid_tiles640_o20+completa,≥ 32 px,36,2,0,34,0.0556,0.0556,0.0556,,,
+holes,holes_A0_completa640__valid_tiles640_o20+completa,total,71,4,0,67,0.0563,0.0563,0.0563,0.013–0.129,0.013–0.129,0.013–0.129
+holes,holes_A1_completa1280__valid_completa1280,< 16 px,19,1,0,18,0.0526,0.0526,0.0526,,,
+holes,holes_A1_completa1280__valid_completa1280,16–32 px,16,5,3,8,0.5,0.3125,0.3125,,,
+holes,holes_A1_completa1280__valid_completa1280,≥ 32 px,36,8,5,23,0.3611,0.2778,0.2222,,,
+holes,holes_A1_completa1280__valid_completa1280,total,71,14,8,49,0.3099,0.2254,0.1972,0.220–0.417,0.133–0.339,0.108–0.315
+holes,holes_A3_tiles1024_neg1__valid_tiles1024_o20,< 16 px,19,3,2,14,0.2632,0.2105,0.1579,,,
+holes,holes_A3_tiles1024_neg1__valid_tiles1024_o20,16–32 px,16,5,2,9,0.4375,0.4375,0.3125,,,
+holes,holes_A3_tiles1024_neg1__valid_tiles1024_o20,≥ 32 px,36,2,1,33,0.0833,0.0833,0.0556,,,
+holes,holes_A3_tiles1024_neg1__valid_tiles1024_o20,total,71,10,5,56,0.2113,0.1972,0.1408,0.123–0.311,0.117–0.286,0.063–0.225
+holes,holes_A3_tiles640_neg0__valid_tiles640_o20,< 16 px,19,2,1,16,0.1579,0.1579,0.1053,,,
+holes,holes_A3_tiles640_neg0__valid_tiles640_o20,16–32 px,16,6,2,8,0.5,0.5,0.375,,,
+holes,holes_A3_tiles640_neg0__valid_tiles640_o20,≥ 32 px,36,8,2,26,0.2778,0.2222,0.2222,,,
+holes,holes_A3_tiles640_neg0__valid_tiles640_o20,total,71,16,5,50,0.2958,0.2676,0.2254,0.197–0.419,0.173–0.381,0.127–0.356
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20,< 16 px,19,2,2,15,0.2105,0.2105,0.1053,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20,16–32 px,16,5,1,10,0.375,0.375,0.3125,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20,≥ 32 px,36,9,2,25,0.3056,0.25,0.25,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20,total,71,16,5,50,0.2958,0.2676,0.2254,0.205–0.410,0.182–0.377,0.143–0.319
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20+completa,< 16 px,19,2,2,15,0.2105,0.2105,0.1053,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20+completa,16–32 px,16,5,1,10,0.375,0.375,0.3125,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20+completa,≥ 32 px,36,9,2,25,0.3056,0.25,0.25,,,
+holes,holes_A3_tiles640_neg1__valid_tiles640_o20+completa,total,71,16,5,50,0.2958,0.2676,0.2254,0.205–0.410,0.182–0.377,0.143–0.319
+holes,holes_A3_tiles640_neg3__valid_tiles640_o20,< 16 px,19,5,3,11,0.4211,0.3158,0.2632,,,
+holes,holes_A3_tiles640_neg3__valid_tiles640_o20,16–32 px,16,6,3,7,0.5625,0.5,0.375,,,
+holes,holes_A3_tiles640_neg3__valid_tiles640_o20,≥ 32 px,36,4,4,28,0.2222,0.1389,0.1111,,,
+holes,holes_A3_tiles640_neg3__valid_tiles640_o20,total,71,15,10,46,0.3521,0.2676,0.2113,0.226–0.463,0.159–0.373,0.111–0.319
+spots,spots_A0_completa640__valid_completa640,< 16 px,138,0,0,138,0.0,0.0,0.0,,,
+spots,spots_A0_completa640__valid_completa640,16–32 px,61,0,1,60,0.0164,0.0,0.0,,,
+spots,spots_A0_completa640__valid_completa640,≥ 32 px,85,3,2,80,0.0588,0.0471,0.0353,,,
+spots,spots_A0_completa640__valid_completa640,total,284,3,3,278,0.0211,0.0141,0.0106,0.005–0.042,0.003–0.031,0.000–0.025
+spots,spots_A0_completa640__valid_tiles640_o20,< 16 px,138,7,8,123,0.1087,0.1014,0.0507,,,
+spots,spots_A0_completa640__valid_tiles640_o20,16–32 px,61,0,3,58,0.0492,0.0328,0.0,,,
+spots,spots_A0_completa640__valid_tiles640_o20,≥ 32 px,85,0,1,84,0.0118,0.0,0.0,,,
+spots,spots_A0_completa640__valid_tiles640_o20,total,284,7,12,265,0.0669,0.0563,0.0246,0.025–0.110,0.017–0.099,0.003–0.055
+spots,spots_A0_completa640__valid_tiles640_o20+completa,< 16 px,138,7,8,123,0.1087,0.1014,0.0507,,,
+spots,spots_A0_completa640__valid_tiles640_o20+completa,16–32 px,61,0,3,58,0.0492,0.0328,0.0,,,
+spots,spots_A0_completa640__valid_tiles640_o20+completa,≥ 32 px,85,2,1,82,0.0353,0.0235,0.0235,,,
+spots,spots_A0_completa640__valid_tiles640_o20+completa,total,284,9,12,263,0.0739,0.0634,0.0317,0.031–0.117,0.024–0.108,0.008–0.066
+spots,spots_A1_completa1280__valid_completa1280,< 16 px,138,4,5,129,0.0652,0.0507,0.029,,,
+spots,spots_A1_completa1280__valid_completa1280,16–32 px,61,11,2,48,0.2131,0.1967,0.1803,,,
+spots,spots_A1_completa1280__valid_completa1280,≥ 32 px,85,10,14,61,0.2824,0.2118,0.1176,,,
+spots,spots_A1_completa1280__valid_completa1280,total,284,25,21,238,0.162,0.1303,0.088,0.114–0.218,0.088–0.175,0.054–0.128
+spots,spots_A3_tiles1024_neg1__valid_tiles1024_o20,< 16 px,138,13,11,114,0.1739,0.1449,0.0942,,,
+spots,spots_A3_tiles1024_neg1__valid_tiles1024_o20,16–32 px,61,6,4,51,0.1639,0.1475,0.0984,,,
+spots,spots_A3_tiles1024_neg1__valid_tiles1024_o20,≥ 32 px,85,1,3,81,0.0471,0.0235,0.0118,,,
+spots,spots_A3_tiles1024_neg1__valid_tiles1024_o20,total,284,20,18,246,0.1338,0.1092,0.0704,0.079–0.187,0.064–0.157,0.032–0.114
+spots,spots_A3_tiles640_neg0__valid_tiles640_o20,< 16 px,138,18,10,110,0.2029,0.1884,0.1304,,,
+spots,spots_A3_tiles640_neg0__valid_tiles640_o20,16–32 px,61,9,5,47,0.2295,0.2131,0.1475,,,
+spots,spots_A3_tiles640_neg0__valid_tiles640_o20,≥ 32 px,85,10,8,67,0.2118,0.1647,0.1176,,,
+spots,spots_A3_tiles640_neg0__valid_tiles640_o20,total,284,37,23,224,0.2113,0.1866,0.1303,0.149–0.267,0.127–0.241,0.081–0.179
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20,< 16 px,138,14,12,112,0.1884,0.1594,0.1014,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20,16–32 px,61,4,5,52,0.1475,0.1311,0.0656,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20,≥ 32 px,85,1,2,82,0.0353,0.0235,0.0118,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20,total,284,19,19,246,0.1338,0.1127,0.0669,0.073–0.199,0.064–0.166,0.033–0.104
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20+completa,< 16 px,138,14,12,112,0.1884,0.1594,0.1014,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20+completa,16–32 px,61,4,5,52,0.1475,0.1311,0.0656,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20+completa,≥ 32 px,85,2,2,81,0.0471,0.0353,0.0235,,,
+spots,spots_A3_tiles640_neg1__valid_tiles640_o20+completa,total,284,20,19,245,0.1373,0.1162,0.0704,0.076–0.203,0.065–0.171,0.036–0.108
+spots,spots_A3_tiles640_neg3__valid_tiles640_o20,< 16 px,138,12,17,109,0.2101,0.1739,0.087,,,
+spots,spots_A3_tiles640_neg3__valid_tiles640_o20,16–32 px,61,2,6,53,0.1311,0.1148,0.0328,,,
+spots,spots_A3_tiles640_neg3__valid_tiles640_o20,≥ 32 px,85,0,0,85,0.0,0.0,0.0,,,
+spots,spots_A3_tiles640_neg3__valid_tiles640_o20,total,284,14,23,247,0.1303,0.1092,0.0493,0.078–0.181,0.062–0.151,0.024–0.074
