@@ -1,6 +1,6 @@
 # EDA de CISUTAC Holes + Spots
 
-Bloque de la Integrante 1 del [plan de EDA](../../notes/PLAN_EDA_REWEAR_AI.md#integrante-1--cisutac-prendas-usadas-y-tamaño-real-de-los-defectos). Sólo lee datos: no modifica imágenes, etiquetas ni splits oficiales. Al final se agrega un [baseline preliminar](#baseline-preliminar-foto-completa-a-640-sólo-valid), entrenado con el split propuesto y evaluado sólo en valid.
+Bloque de la Integrante 1 del plan de EDA. Sólo lee datos: no modifica imágenes, etiquetas ni splits oficiales. Al final se agrega un [baseline preliminar](#baseline-preliminar-foto-completa-a-640-sólo-valid), entrenado con el split propuesto y evaluado sólo en valid.
 
 **Regenerar todas las tablas y figuras** (unos 8 segundos; sólo requiere `data/cisutac_holes` y `data/cisutac_spots`, o `REWEAR_DATA_DIR`):
 
@@ -84,7 +84,7 @@ Tabla completa con controles de integridad: [`cis1_inventario.csv`](cis1_inventa
 
 - **Valid es muy chico:** 32 prendas en Holes y 38 en Spots. Una métrica en valid tendrá mucha varianza; la propuesta de test independiente va en CIS-5.
 - Entrenar con todos los archivos tal como vienen mezclaría dos escalas de la misma foto y daría doble peso a las capturas con copia. Recomendación para el baseline: usar sólo los originales.
-- **Para la integración (Integrante 4):** `dataset_audit.md` y `notes/AGENTS.md` mencionan 761/906 imágenes y 1.497/4.777 instancias. Son conteos de archivos con copias, no de fotos distintas. No se modificaron esos documentos compartidos.
+- **Para la integración (Integrante 4):** `dataset_audit.md` menciona 761/906 imágenes y 1.497/4.777 instancias. Son conteos de archivos con copias, no de fotos distintas. No se modificaron esos documentos compartidos.
 - **Observación de dominio (para INT-2):** las fotos tienen el fondo difuminado artificialmente (`nobg` en el nombre) y la prenda colgada en una percha.
 
 ### Tabla por instancia
@@ -618,7 +618,7 @@ Defectos encontrados sobre el total de valid, por lado equivalente en la origina
 | 2 | Aprobar las definiciones de defecto pequeño (< 32 px) y diminuto (< 16 px) en la original | Los 4 | **Sí** |
 | 3 | Usar sólo originales, sin copias de 640 | Revisión del equipo | **Resuelto:** aprobado |
 | 4 | Usar el día como unidad de agrupación, no el código hex | Revisión del equipo | **Resuelto:** aplicado en CISUTAC v1 |
-| 5 | Corregir en `dataset_audit.md` y `notes/AGENTS.md` que 761/906 son archivos con copias, no imágenes distintas (407/486) | Integrante 4 al integrar | No |
+| 5 | Corregir en `dataset_audit.md` que 761/906 son archivos con copias, no imágenes distintas (407/486) | Integrante 4 al integrar | No |
 | 6 | Integrar figuras y tablas de esta carpeta al notebook principal | Integrante 4 | No |
 | 7 | Si frente y espalda llevan códigos distintos (remera amarilla) y si hay manchas aplicadas a propósito. Ni el README ni Hugging Face lo aclaran, y la página de Roboflow no es accesible; se podría consultar a Wargön Innovation | Integrante 1 | No |
 | 8 | Decidir qué hacer con la posible caja duplicada de Holes (`20260224_092807_f33c0705`); el original no se modifica | Los 4 | No |

@@ -57,7 +57,7 @@ STYLE = {"font.size": 9, "text.color": INK, "axes.labelcolor": MUTED, "axes.edge
 
 def write_csv(path, rows):
     fields = list(dict.fromkeys(key for row in rows for key in row))  # unión, en orden de aparición
-    with path.open("w", newline="") as handle:
+    with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows({k: round(v, 4) if isinstance(v, float) else v for k, v in row.items()} for row in rows)
