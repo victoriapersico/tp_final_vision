@@ -90,6 +90,8 @@ Los entrenamientos se corren en [Kaggle](https://www.kaggle.com) (cuenta gratuit
 4. Corrida real con `MODO_PRUEBA = False` y *Save Version → Save & Run All (Commit)*; sigue corriendo aunque se cierre la compu.
 5. Descargar de *Output* el `results_bloque_*.zip` y descomprimirlo en la raíz del repo; también queda el notebook ejecutado con todas sus salidas.
 
+Las corridas pendientes (semillas y test con YOLO26n, negativos difíciles) y cómo lanzarlas están en [`kaggle/README.md`](kaggle/README.md).
+
 Si una sesión se corta (límite de unas 12 h), agregar su *Output* como *Add Input* y volver a correr: los notebooks reutilizan lo que ya está en `results/`. La sesión interactiva con GPU encendida consume la cuota semanal (30 h) aunque no se esté ejecutando nada.
 
 ## Reproducibilidad del equipo

@@ -1,7 +1,10 @@
-"""Versión script (.py) de kaggle_mejora_a3_holes.ipynb, para importar en Kaggle con *Import Notebook → Link*.
+"""Versión script (.py) de kaggle_mejora_a3_holes.ipynb: mismo código, sin celdas.
 
-Al importar un .ipynb desde una URL "raw" de GitHub, Kaggle lo crea como script y no lo ejecuta;
-este archivo tiene el mismo código, así que se puede importar como script sin problemas.
+Sirve para lanzarlo desde un notebook nuevo de Kaggle con una sola celda:
+
+    import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/victoriapersico/tp_final_vision/sofi/kaggle/kaggle_mejora_a3_holes.py').read().decode())
+
+Ver kaggle/README.md.
 
 # Bloque A en Kaggle: negativos difíciles en la A3 de CISUTAC **Holes** (corrida real)
 
